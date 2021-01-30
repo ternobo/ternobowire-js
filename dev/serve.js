@@ -13,7 +13,7 @@ Vue.use(plugin);
 
 let vuexStore = store();
 
-let component = "Index";
+let component = window.location.pathname.replace("/", "");
 let data = {};
 
 window.axios = axios;

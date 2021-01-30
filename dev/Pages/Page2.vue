@@ -1,8 +1,5 @@
 <template>
-	<div>
-		<p>Index Page</p>
-		<wire-link href="page-2"></wire-link>
-	</div>
+	<div>Page 2</div>
 </template>
 
 <script>
