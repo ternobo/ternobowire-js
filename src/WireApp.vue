@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import AppLayout from "./Layouts/AppLayout";
+import AppLayout from "@/Layouts/AppLayout";
 export default {
 	methods: {
 		updateComponent() {
@@ -45,10 +45,11 @@ export default {
 		};
 	},
 	created() {
-		this.data = this.initialData;
+		this.data = this.initialData.data;
 		this.component = this.initialComponent;
 		this.$store.commit("userUpdate");
 		this.$store.commit("setupApp", { data: this.data, app: this });
+		this.$store.commit("updatedShared", this.initialData.shared);
 		this.$nextTick(() => {
 			this.updateComponent();
 		});

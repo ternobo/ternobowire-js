@@ -1,3 +1,6 @@
+/**
+ * Ternobo WireLink Component
+ */
 export default {
     name: "WireLink",
     functional: true,

@@ -2,7 +2,7 @@ import Vue from 'vue';
 import {
   store,
   plugin,
-} from '@/TernoboWire';
+} from '@/entry';
 
 import TernoboApp from '@/WireApp.vue';
 import axios from "axios";

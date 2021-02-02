@@ -1,0 +1,993 @@
+[
+  {
+    "__docId__": 1,
+    "kind": "external",
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Infinity",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 2,
+    "kind": "external",
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~NaN",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 3,
+    "kind": "external",
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~undefined",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 4,
+    "kind": "external",
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~null",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 5,
+    "kind": "external",
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 6,
+    "kind": "external",
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 7,
+    "kind": "external",
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 8,
+    "kind": "external",
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 9,
+    "kind": "external",
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 10,
+    "kind": "external",
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 11,
+    "kind": "external",
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Symbol",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 12,
+    "kind": "external",
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Error",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 13,
+    "kind": "external",
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~EvalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 14,
+    "kind": "external",
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~InternalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 15,
+    "kind": "external",
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~RangeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 16,
+    "kind": "external",
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~ReferenceError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 17,
+    "kind": "external",
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~SyntaxError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 18,
+    "kind": "external",
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~TypeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 19,
+    "kind": "external",
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~URIError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 20,
+    "kind": "external",
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 21,
+    "kind": "external",
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 22,
+    "kind": "external",
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Date",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 23,
+    "kind": "external",
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~String",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 24,
+    "kind": "external",
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~string",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 25,
+    "kind": "external",
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~RegExp",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 26,
+    "kind": "external",
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 27,
+    "kind": "external",
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 28,
+    "kind": "external",
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 29,
+    "kind": "external",
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint8ClampedArray",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 30,
+    "kind": "external",
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 31,
+    "kind": "external",
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 32,
+    "kind": "external",
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 33,
+    "kind": "external",
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 34,
+    "kind": "external",
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Float32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 35,
+    "kind": "external",
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Float64Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 36,
+    "kind": "external",
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Map",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 37,
+    "kind": "external",
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Set",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 38,
+    "kind": "external",
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~WeakMap",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 39,
+    "kind": "external",
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~WeakSet",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 40,
+    "kind": "external",
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~ArrayBuffer",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 41,
+    "kind": "external",
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~DataView",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 42,
+    "kind": "external",
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~JSON",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 43,
+    "kind": "external",
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Promise",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 44,
+    "kind": "external",
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Generator",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 45,
+    "kind": "external",
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~GeneratorFunction",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 46,
+    "kind": "external",
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Reflect",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 47,
+    "kind": "external",
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Proxy",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 48,
+    "kind": "file",
+    "name": "src/entry.js",
+    "content": "import WireLink from \"./Components/WireLink\";\nimport Vuex from 'vuex';\nimport WireApp from \"./WireApp.vue\";\n\n/**\n * Check if URL is from Same Origin.\n * @param {string} url \n */\nfunction testSameOrigin(url) {\n  var loc = window.location,\n    a = document.createElement('a');\n  a.href = url;\n  return a.hostname == loc.hostname &&\n    a.port == loc.port &&\n    a.protocol == loc.protocol;\n}\n\n/**\n * TernoboWire Base Class\n */\nclass TernoboWire {\n\n  /**\n   * setup TernoboWire Application. Automatic Setup on WireApp.vue\n   * @param {Vue} application - TernoboWire Application root\n   * @param {object} data - Initial Data.\n   */\n  constructor(application, data) {\n    this.app = application;\n    this.data = data;\n    window.history.replaceState({ visitId: \"wire\" }, \"\", window.location.href);\n    window.addEventListener('popstate', (event) => {\n      if (JSON.stringify(window.history.state) == JSON.stringify(this.createVisitId())) {\n        this.visit(window.location.href, {}, 'get', false);\n      }\n    })\n  }\n\n  /**\n   * Get page data without reredndering Page component \n   * @param {string} location - request url\n   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document\n   * @param {object} data - request body (object)\n   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)\n   * @param {boolean} pushState - if true, push history state\n   */\n  getData(location, navigateLoading = true, data = {}, type = 'get', pushState = true) {\n    return new Promise((resolve, reject) => {\n      let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });\n      if (navigateLoading) {\n        window.document.dispatchEvent(onStart);\n      }\n      axios({\n        method: type,\n        data: data,\n        url: location,\n        headers: {\n          \"X-TernoboWire\": true\n        }\n      }).then((response) => {\n        resolve(response.data.data);\n        if (response.headers['x-ternobowire']) {\n          if (pushState) {\n            window.history.pushState(this.createVisitId(), \"\", location);\n          }\n          const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });\n          if (navigateLoading) {\n            window.document.dispatchEvent(onLoaded);\n          }\n        }\n      }).catch((err) => {\n        if (!TernoboWire.production) {\n          console.log(err);\n        }\n        reject(err);\n      }).then(() => {\n        if (navigateLoading) {\n          const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });\n          window.document.dispatchEvent(onFinish);\n        }\n        resolve();\n      });\n    });\n  }\n\n  /**\n   * Reload current page\n   * @param {object} options - reload options (Documented on TernoboWire-Laravel)\n   */\n  reload(options = {}) {\n    let location = window.href;\n    let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });\n    window.document.dispatchEvent(onStart);\n    axios({\n      method: type,\n      data: {\n        options: options\n      },\n      url: location,\n      headers: {\n        \"X-TernoboWire\": true\n      }\n    }).then((response) => {\n      if (response.headers['x-ternobowire']) {\n        this.app.$store.commit(\"updatedShared\", response.data.shared);\n        this.loadComponent(response.data.component, response.data.data);\n        const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });\n        window.document.dispatchEvent(onLoaded);\n      } else {\n        window.location.reload();\n      }\n    }).catch((err) => {\n      if (!TernoboWire.production) {\n        console.log(err);\n      }\n    }).then(() => {\n      const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });\n      window.document.dispatchEvent(onFinish);\n    });\n  }\n\n  /**\n   * Visit URL \n   * @param {string} location - request url\n   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document\n   * @param {object} data - request body (object)\n   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)\n   * @param {boolean} pushState - if true, push history state\n   */\n  visit(location, data = {}, type = 'get', pushState = true) {\n    if (!testSameOrigin(location)) {\n      window.open(location);\n    }\n    let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });\n    window.document.dispatchEvent(onStart);\n    axios({\n      method: type,\n      data: data,\n      url: location,\n      headers: {\n        \"X-TernoboWire\": true\n      }\n    }).then((response) => {\n      if (response.headers['x-ternobowire']) {\n        this.app.$store.commit(\"updatedShared\", response.data.shared);\n        this.loadComponent(response.data.component, response.data.data);\n        if (pushState) {\n          window.history.pushState(this.createVisitId(), \"\", location);\n        }\n        const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });\n        window.document.dispatchEvent(onLoaded);\n      } else {\n        window.location = location;\n      }\n    }).catch((err) => {\n      if (!TernoboWire.production) {\n        console.log(err);\n      }\n    }).then(() => {\n      const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });\n      window.document.dispatchEvent(onFinish);\n    });\n  }\n\n  loadComponent(component, data) {\n    this.app.component = component;\n    this.app.data = data;\n    this.app.updateComponent();\n  }\n\n  createVisitId() {\n    this.visitId = { visitId: \"wire\" }\n    return this.visitId\n  }\n}\nexport const plugin = {\n  install(Vue) {\n    Vue.use(Vuex);\n    Vue.component(\"wire-link\", WireLink);\n    Vue.directive(\"infinite-scroll\", {\n      bind(el, binding, vnode) {\n        el.addEventListener(\"scroll\", (e) => {\n          if (el.scrollTop + el.clientHeight >= el.scrollHeight) {\n            binding.value();\n          }\n        });\n      }\n    });\n    Vue.directive('click-outside', {\n      bind(el, binding, vnode) {\n        let event = event => vnode.context.$emit(binding.expression, event);\n        document.body.addEventListener('click', event)\n      }\n    });\n  }\n}\n\n\nexport default WireApp;\n\nexport function store(options = { state: null, getters: {}, mutations: null }) {\n  if (options.state != null && typeof (options.state) == \"object\") {\n    options.state.user = null;\n    options.state.ternoboWireApp = null;\n    options.state.shared = {};\n  } else {\n    options.state = {\n      user: {},\n      ternoboWireApp: null,\n      shared: {},\n    };\n  }\n  if (options.mutations != null && typeof (options.mutations) == \"object\") {\n    options.mutations.setupApp = function (state, payload) {\n      state.ternoboWireApp = new TernoboWire(payload.app, payload.data);\n    };\n\n    options.mutations.updatedShared = function (state, payload) {\n      state.shared = payload;\n    };\n\n    options.mutations.userUpdate = function (state) {\n      axios.post(\"/ternobo-wire/get-user\").then((response) => {\n        state.user = response.data.user\n      });\n    };\n  } else {\n    options.mutations = {\n      updatedShared(state, payload) {\n        state.shared = payload;\n      },\n      userUpdate(state) {\n        axios.post(\"/ternobo-wire/get-user\").then((response) => {\n          state.user = response.data.user\n        });\n      },\n      setupApp(state, payload) {\n        state.ternoboWireApp = new TernoboWire(payload.app, payload.data);\n      }\n    };\n  }\n  return new Vuex.Store(options);\n};",
+    "static": true,
+    "longname": "/home/soroosh/Projects/wire-js/src/entry.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 49,
+    "kind": "function",
+    "name": "testSameOrigin",
+    "memberof": "src/entry.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/entry.js~testSameOrigin",
+    "access": "public",
+    "export": false,
+    "importPath": "wire-js/src/entry.js",
+    "importStyle": null,
+    "description": "Check if URL is from Same Origin.",
+    "lineNumber": 9,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "url",
+        "description": ""
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 50,
+    "kind": "class",
+    "name": "TernoboWire",
+    "memberof": "src/entry.js",
+    "static": true,
+    "longname": "src/entry.js~TernoboWire",
+    "access": "public",
+    "export": false,
+    "importPath": "wire-js/src/entry.js",
+    "importStyle": null,
+    "description": "TernoboWire Base Class",
+    "lineNumber": 21,
+    "interface": false,
+    "ignore": true
+  },
+  {
+    "__docId__": 51,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/entry.js~TernoboWire",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/entry.js~TernoboWire#constructor",
+    "access": "public",
+    "description": "setup TernoboWire Application. Automatic Setup on WireApp.vue",
+    "lineNumber": 28,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vue"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "application",
+        "description": "TernoboWire Application root"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "data",
+        "description": "Initial Data."
+      }
+    ]
+  },
+  {
+    "__docId__": 52,
+    "kind": "member",
+    "name": "app",
+    "memberof": "src/entry.js~TernoboWire",
+    "static": false,
+    "longname": "src/entry.js~TernoboWire#app",
+    "access": "public",
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 53,
+    "kind": "member",
+    "name": "data",
+    "memberof": "src/entry.js~TernoboWire",
+    "static": false,
+    "longname": "src/entry.js~TernoboWire#data",
+    "access": "public",
+    "description": null,
+    "lineNumber": 30,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 54,
+    "kind": "method",
+    "name": "getData",
+    "memberof": "src/entry.js~TernoboWire",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/entry.js~TernoboWire#getData",
+    "access": "public",
+    "description": "Get page data without reredndering Page component ",
+    "lineNumber": 47,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "location",
+        "description": "request url"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "navigateLoading",
+        "description": "if true, dispatch navigation event to window.document"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "data",
+        "description": "request body (object)"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "type",
+        "description": "request method (POST,GET,PUT,DELETE,PATCH)"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "pushState",
+        "description": "if true, push history state"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 55,
+    "kind": "method",
+    "name": "reload",
+    "memberof": "src/entry.js~TernoboWire",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/entry.js~TernoboWire#reload",
+    "access": "public",
+    "description": "Reload current page",
+    "lineNumber": 90,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": "reload options (Documented on TernoboWire-Laravel)"
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 56,
+    "kind": "method",
+    "name": "visit",
+    "memberof": "src/entry.js~TernoboWire",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/entry.js~TernoboWire#visit",
+    "access": "public",
+    "description": "Visit URL ",
+    "lineNumber": 130,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "location",
+        "description": "request url"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "navigateLoading",
+        "description": "if true, dispatch navigation event to window.document"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "data",
+        "description": "request body (object)"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "type",
+        "description": "request method (POST,GET,PUT,DELETE,PATCH)"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "pushState",
+        "description": "if true, push history state"
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 57,
+    "kind": "method",
+    "name": "loadComponent",
+    "memberof": "src/entry.js~TernoboWire",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/entry.js~TernoboWire#loadComponent",
+    "access": "public",
+    "description": null,
+    "lineNumber": 165,
+    "undocument": true,
+    "params": [
+      {
+        "name": "component",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "data",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": null
+  },
+  {
+    "__docId__": 58,
+    "kind": "method",
+    "name": "createVisitId",
+    "memberof": "src/entry.js~TernoboWire",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/entry.js~TernoboWire#createVisitId",
+    "access": "public",
+    "description": null,
+    "lineNumber": 171,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 59,
+    "kind": "member",
+    "name": "visitId",
+    "memberof": "src/entry.js~TernoboWire",
+    "static": false,
+    "longname": "src/entry.js~TernoboWire#visitId",
+    "access": "public",
+    "description": null,
+    "lineNumber": 172,
+    "undocument": true,
+    "type": {
+      "types": [
+        "{\"visitId\": string}"
+      ]
+    }
+  },
+  {
+    "__docId__": 60,
+    "kind": "variable",
+    "name": "plugin",
+    "memberof": "src/entry.js",
+    "static": true,
+    "longname": "src/entry.js~plugin",
+    "access": "public",
+    "export": true,
+    "importPath": "wire-js/src/entry.js",
+    "importStyle": "{plugin}",
+    "description": null,
+    "lineNumber": 176,
+    "undocument": true,
+    "type": {
+      "types": [
+        "{\"install\": function}"
+      ]
+    }
+  },
+  {
+    "__docId__": 61,
+    "kind": "function",
+    "name": "store",
+    "memberof": "src/entry.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/entry.js~store",
+    "access": "public",
+    "export": true,
+    "importPath": "wire-js/src/entry.js",
+    "importStyle": "{store}",
+    "description": null,
+    "lineNumber": 201,
+    "undocument": true,
+    "params": [
+      {
+        "name": "options",
+        "optional": true,
+        "types": [
+          "{\"state\": undefined, \"getters\": undefined, \"mutations\": undefined}"
+        ],
+        "defaultRaw": {},
+        "defaultValue": "{}"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "index",
+    "content": "",
+    "longname": "/home/soroosh/Projects/wire-js/README.md",
+    "name": "./README.md",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "packageJSON",
+    "content": "{\n  \"name\": \"wire-js\",\n  \"version\": \"1.0.0\",\n  \"description\": \"\",\n  \"main\": \"dist/wire-js.ssr.js\",\n  \"browser\": \"dist/wire-js.esm.js\",\n  \"module\": \"dist/wire-js.esm.js\",\n  \"unpkg\": \"dist/wire-js.min.js\",\n  \"files\": [\n    \"dist/*\",\n    \"src/**/*.vue\"\n  ],\n  \"scripts\": {\n    \"serve\": \"vue-cli-service serve dev/serve.js\",\n    \"build\": \"cross-env NODE_ENV=production rollup --config build/rollup.config.js\",\n    \"build:ssr\": \"cross-env NODE_ENV=production rollup --config build/rollup.config.js --format cjs\",\n    \"build:es\": \"cross-env NODE_ENV=production rollup --config build/rollup.config.js --format es\",\n    \"build:unpkg\": \"cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife\"\n  },\n  \"dependencies\": {\n    \"axios\": \"^0.21.1\",\n    \"esdoc\": \"^1.1.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"vuex\": \"^3.6.2\"\n  },\n  \"devDependencies\": {\n    \"@babel/core\": \"^7.9.0\",\n    \"@babel/preset-env\": \"^7.9.5\",\n    \"@rollup/plugin-alias\": \"^2.2.0\",\n    \"@rollup/plugin-commonjs\": \"^11.1.0\",\n    \"@rollup/plugin-replace\": \"^2.3.2\",\n    \"@vue/cli-plugin-babel\": \"^4.3.1\",\n    \"@vue/cli-service\": \"^4.3.1\",\n    \"cross-env\": \"^7.0.2\",\n    \"minimist\": \"^1.2.5\",\n    \"rollup\": \"^2.7.3\",\n    \"rollup-plugin-babel\": \"^4.4.0\",\n    \"rollup-plugin-terser\": \"^5.3.0\",\n    \"rollup-plugin-vue\": \"^5.1.6\",\n    \"vue\": \"^2.6.11\",\n    \"vue-template-compiler\": \"^2.6.11\"\n  },\n  \"peerDependencies\": {\n    \"vue\": \"^2.6.11\"\n  },\n  \"engines\": {\n    \"node\": \">=10\"\n  }\n}\n",
+    "longname": "/home/soroosh/Projects/wire-js/package.json",
+    "name": "package.json",
+    "static": true,
+    "access": "public"
+  }
+]

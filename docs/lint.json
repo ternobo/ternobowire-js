@@ -1,0 +1,57 @@
+[
+  {
+    "name": "TernoboWire#visit",
+    "filePath": "src/entry.js",
+    "lines": [
+      {
+        "lineNumber": 121,
+        "line": "  /**"
+      },
+      {
+        "lineNumber": 122,
+        "line": "   * Visit URL "
+      },
+      {
+        "lineNumber": 123,
+        "line": "   * @param {string} location - request url"
+      },
+      {
+        "lineNumber": 124,
+        "line": "   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document"
+      },
+      {
+        "lineNumber": 125,
+        "line": "   * @param {object} data - request body (object)"
+      },
+      {
+        "lineNumber": 126,
+        "line": "   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)"
+      },
+      {
+        "lineNumber": 127,
+        "line": "   * @param {boolean} pushState - if true, push history state"
+      },
+      {
+        "lineNumber": 128,
+        "line": "   */"
+      },
+      {
+        "lineNumber": 129,
+        "line": "  visit(location, data = {}, type = 'get', pushState = true) {"
+      }
+    ],
+    "codeParams": [
+      "location",
+      "data",
+      "type",
+      "pushState"
+    ],
+    "docParams": [
+      "location",
+      "navigateLoading",
+      "data",
+      "type",
+      "pushState"
+    ]
+  }
+]

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/entry.js | wire-js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-store">store</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-plugin">plugin</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/entry.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import WireLink from &quot;./Components/WireLink&quot;;
+import Vuex from &apos;vuex&apos;;
+import WireApp from &quot;./WireApp.vue&quot;;
+
+/**
+ * Check if URL is from Same Origin.
+ * @param {string} url 
+ */
+function testSameOrigin(url) {
+  var loc = window.location,
+    a = document.createElement(&apos;a&apos;);
+  a.href = url;
+  return a.hostname == loc.hostname &amp;&amp;
+    a.port == loc.port &amp;&amp;
+    a.protocol == loc.protocol;
+}
+
+/**
+ * TernoboWire Base Class
+ */
+class TernoboWire {
+
+  /**
+   * setup TernoboWire Application. Automatic Setup on WireApp.vue
+   * @param {Vue} application - TernoboWire Application root
+   * @param {object} data - Initial Data.
+   */
+  constructor(application, data) {
+    this.app = application;
+    this.data = data;
+    window.history.replaceState({ visitId: &quot;wire&quot; }, &quot;&quot;, window.location.href);
+    window.addEventListener(&apos;popstate&apos;, (event) =&gt; {
+      if (JSON.stringify(window.history.state) == JSON.stringify(this.createVisitId())) {
+        this.visit(window.location.href, {}, &apos;get&apos;, false);
+      }
+    })
+  }
+
+  /**
+   * Get page data without reredndering Page component 
+   * @param {string} location - request url
+   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document
+   * @param {object} data - request body (object)
+   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
+   * @param {boolean} pushState - if true, push history state
+   */
+  getData(location, navigateLoading = true, data = {}, type = &apos;get&apos;, pushState = true) {
+    return new Promise((resolve, reject) =&gt; {
+      let onStart = new CustomEvent(&apos;ternobo:navigate&apos;, { detail: { location: location } });
+      if (navigateLoading) {
+        window.document.dispatchEvent(onStart);
+      }
+      axios({
+        method: type,
+        data: data,
+        url: location,
+        headers: {
+          &quot;X-TernoboWire&quot;: true
+        }
+      }).then((response) =&gt; {
+        resolve(response.data.data);
+        if (response.headers[&apos;x-ternobowire&apos;]) {
+          if (pushState) {
+            window.history.pushState(this.createVisitId(), &quot;&quot;, location);
+          }
+          const onLoaded = new CustomEvent(&apos;ternobo:loaded&apos;, { detail: { location: location } });
+          if (navigateLoading) {
+            window.document.dispatchEvent(onLoaded);
+          }
+        }
+      }).catch((err) =&gt; {
+        if (!TernoboWire.production) {
+          console.log(err);
+        }
+        reject(err);
+      }).then(() =&gt; {
+        if (navigateLoading) {
+          const onFinish = new CustomEvent(&apos;ternobo:finish&apos;, { detail: { location: location } });
+          window.document.dispatchEvent(onFinish);
+        }
+        resolve();
+      });
+    });
+  }
+
+  /**
+   * Reload current page
+   * @param {object} options - reload options (Documented on TernoboWire-Laravel)
+   */
+  reload(options = {}) {
+    let location = window.href;
+    let onStart = new CustomEvent(&apos;ternobo:navigate&apos;, { detail: { location: location } });
+    window.document.dispatchEvent(onStart);
+    axios({
+      method: type,
+      data: {
+        options: options
+      },
+      url: location,
+      headers: {
+        &quot;X-TernoboWire&quot;: true
+      }
+    }).then((response) =&gt; {
+      if (response.headers[&apos;x-ternobowire&apos;]) {
+        this.app.$store.commit(&quot;updatedShared&quot;, response.data.shared);
+        this.loadComponent(response.data.component, response.data.data);
+        const onLoaded = new CustomEvent(&apos;ternobo:loaded&apos;, { detail: { location: location } });
+        window.document.dispatchEvent(onLoaded);
+      } else {
+        window.location.reload();
+      }
+    }).catch((err) =&gt; {
+      if (!TernoboWire.production) {
+        console.log(err);
+      }
+    }).then(() =&gt; {
+      const onFinish = new CustomEvent(&apos;ternobo:finish&apos;, { detail: { location: location } });
+      window.document.dispatchEvent(onFinish);
+    });
+  }
+
+  /**
+   * Visit URL 
+   * @param {string} location - request url
+   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document
+   * @param {object} data - request body (object)
+   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
+   * @param {boolean} pushState - if true, push history state
+   */
+  visit(location, data = {}, type = &apos;get&apos;, pushState = true) {
+    if (!testSameOrigin(location)) {
+      window.open(location);
+    }
+    let onStart = new CustomEvent(&apos;ternobo:navigate&apos;, { detail: { location: location } });
+    window.document.dispatchEvent(onStart);
+    axios({
+      method: type,
+      data: data,
+      url: location,
+      headers: {
+        &quot;X-TernoboWire&quot;: true
+      }
+    }).then((response) =&gt; {
+      if (response.headers[&apos;x-ternobowire&apos;]) {
+        this.app.$store.commit(&quot;updatedShared&quot;, response.data.shared);
+        this.loadComponent(response.data.component, response.data.data);
+        if (pushState) {
+          window.history.pushState(this.createVisitId(), &quot;&quot;, location);
+        }
+        const onLoaded = new CustomEvent(&apos;ternobo:loaded&apos;, { detail: { location: location } });
+        window.document.dispatchEvent(onLoaded);
+      } else {
+        window.location = location;
+      }
+    }).catch((err) =&gt; {
+      if (!TernoboWire.production) {
+        console.log(err);
+      }
+    }).then(() =&gt; {
+      const onFinish = new CustomEvent(&apos;ternobo:finish&apos;, { detail: { location: location } });
+      window.document.dispatchEvent(onFinish);
+    });
+  }
+
+  loadComponent(component, data) {
+    this.app.component = component;
+    this.app.data = data;
+    this.app.updateComponent();
+  }
+
+  createVisitId() {
+    this.visitId = { visitId: &quot;wire&quot; }
+    return this.visitId
+  }
+}
+export const plugin = {
+  install(Vue) {
+    Vue.use(Vuex);
+    Vue.component(&quot;wire-link&quot;, WireLink);
+    Vue.directive(&quot;infinite-scroll&quot;, {
+      bind(el, binding, vnode) {
+        el.addEventListener(&quot;scroll&quot;, (e) =&gt; {
+          if (el.scrollTop + el.clientHeight &gt;= el.scrollHeight) {
+            binding.value();
+          }
+        });
+      }
+    });
+    Vue.directive(&apos;click-outside&apos;, {
+      bind(el, binding, vnode) {
+        let event = event =&gt; vnode.context.$emit(binding.expression, event);
+        document.body.addEventListener(&apos;click&apos;, event)
+      }
+    });
+  }
+}
+
+
+export default WireApp;
+
+export function store(options = { state: null, getters: {}, mutations: null }) {
+  if (options.state != null &amp;&amp; typeof (options.state) == &quot;object&quot;) {
+    options.state.user = null;
+    options.state.ternoboWireApp = null;
+    options.state.shared = {};
+  } else {
+    options.state = {
+      user: {},
+      ternoboWireApp: null,
+      shared: {},
+    };
+  }
+  if (options.mutations != null &amp;&amp; typeof (options.mutations) == &quot;object&quot;) {
+    options.mutations.setupApp = function (state, payload) {
+      state.ternoboWireApp = new TernoboWire(payload.app, payload.data);
+    };
+
+    options.mutations.updatedShared = function (state, payload) {
+      state.shared = payload;
+    };
+
+    options.mutations.userUpdate = function (state) {
+      axios.post(&quot;/ternobo-wire/get-user&quot;).then((response) =&gt; {
+        state.user = response.data.user
+      });
+    };
+  } else {
+    options.mutations = {
+      updatedShared(state, payload) {
+        state.shared = payload;
+      },
+      userUpdate(state) {
+        axios.post(&quot;/ternobo-wire/get-user&quot;).then((response) =&gt; {
+          state.user = response.data.user
+        });
+      },
+      setupApp(state, payload) {
+        state.ternoboWireApp = new TernoboWire(payload.app, payload.data);
+      }
+    };
+  }
+  return new Vuex.Store(options);
+};</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
