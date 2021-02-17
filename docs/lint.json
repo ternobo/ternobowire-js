@@ -4,39 +4,39 @@
     "filePath": "src/entry.js",
     "lines": [
       {
-        "lineNumber": 121,
+        "lineNumber": 131,
         "line": "  /**"
       },
       {
-        "lineNumber": 122,
+        "lineNumber": 132,
         "line": "   * Visit URL "
       },
       {
-        "lineNumber": 123,
+        "lineNumber": 133,
         "line": "   * @param {string} location - request url"
       },
       {
-        "lineNumber": 124,
+        "lineNumber": 134,
         "line": "   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document"
       },
       {
-        "lineNumber": 125,
+        "lineNumber": 135,
         "line": "   * @param {object} data - request body (object)"
       },
       {
-        "lineNumber": 126,
+        "lineNumber": 136,
         "line": "   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)"
       },
       {
-        "lineNumber": 127,
+        "lineNumber": 137,
         "line": "   * @param {boolean} pushState - if true, push history state"
       },
       {
-        "lineNumber": 128,
+        "lineNumber": 138,
         "line": "   */"
       },
       {
-        "lineNumber": 129,
+        "lineNumber": 139,
         "line": "  visit(location, data = {}, type = 'get', pushState = true) {"
       }
     ],

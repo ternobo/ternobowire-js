@@ -1,5 +1,8 @@
 import Vuex from 'vuex';
 
+/**
+ * Ternobo WireLink Component
+ */
 var WireLink = {
   name: "WireLink",
   functional: true,
@@ -181,7 +184,6 @@ const __vue_component__ = /*#__PURE__*/normalizeComponent({
 var script$1 = {
   methods: {
     updateComponent() {
-      console.log(this.component);
       this.resolveComponent(this.component).then(value => {
         this.componentInstance = value.default;
 
@@ -285,14 +287,38 @@ const __vue_component__$1 = /*#__PURE__*/normalizeComponent({
   staticRenderFns: __vue_staticRenderFns__$1
 }, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
 
+/**
+ * Check if URL is from Same Origin.
+ * @param {string} url 
+ */
+
 function testSameOrigin(url) {
   var loc = window.location,
       a = document.createElement('a');
   a.href = url;
   return a.hostname == loc.hostname && a.port == loc.port && a.protocol == loc.protocol;
 }
+/**
+ * TernoboWire Base Class
+ */
+
 
 class TernoboWire {
+  /**
+   * 
+   * @param {Vue} vm Current Vue Instance
+   * @returns { TernoboWire }
+   */
+  static getInstance(vm) {
+    return vm.$store.state.ternoboWireApp;
+  }
+  /**
+   * setup TernoboWire Application. Automatic Setup on WireApp.vue
+   * @param {Vue} application - TernoboWire Application root
+   * @param {object} data - Initial Data.
+   */
+
+
   constructor(application, data) {
     this.app = application;
     this.data = data;
@@ -305,8 +331,17 @@ class TernoboWire {
       }
     });
   }
+  /**
+   * Get page data without reredndering Page component 
+   * @param {string} location - request url
+   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document
+   * @param {object} data - request body (object)
+   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
+   * @param {boolean} pushState - if true, push history state
+   */
 
-  getData(location, navigateLoading = true, data = {}, type = 'get', pushState = true) {
+
+  getData(location, navigateLoading = true, pushState = false, data = {}, type = 'get') {
     return new Promise((resolve, reject) => {
       let onStart = new CustomEvent('ternobo:navigate', {
         detail: {
@@ -363,9 +398,14 @@ class TernoboWire {
       });
     });
   }
+  /**
+   * Reload current page
+   * @param {object} options - reload options (Documented on TernoboWire-Laravel)
+   */
+
 
   reload(options = {}) {
-    let location = window.href;
+    let location = window.location.href;
     let onStart = new CustomEvent('ternobo:navigate', {
       detail: {
         location: location
@@ -373,12 +413,13 @@ class TernoboWire {
     });
     window.document.dispatchEvent(onStart);
     axios({
-      method: type,
+      method: "GET",
       data: {
         options: options
       },
       url: location,
       headers: {
+        "X-ReloadData": true,
         "X-TernoboWire": true
       }
     }).then(response => {
@@ -407,6 +448,15 @@ class TernoboWire {
       window.document.dispatchEvent(onFinish);
     });
   }
+  /**
+   * Visit URL 
+   * @param {string} location - request url
+   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document
+   * @param {object} data - request body (object)
+   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
+   * @param {boolean} pushState - if true, push history state
+   */
+
 
   visit(location, data = {}, type = 'get', pushState = true) {
     if (!testSameOrigin(location)) {
@@ -472,12 +522,11 @@ class TernoboWire {
   }
 
 }
-
 const plugin = {
   install(Vue) {
     Vue.use(Vuex);
     Vue.component("wire-link", WireLink);
-    Vue.directive("infinite-scroll", {
+    Vue.directive("t-infinite-scroll", {
       bind(el, binding, vnode) {
         el.addEventListener("scroll", e => {
           if (el.scrollTop + el.clientHeight >= el.scrollHeight) {
@@ -552,4 +601,4 @@ function store(options = {
 }
 
 export default __vue_component__$1;
-export { plugin, store };
+export { TernoboWire, plugin, store };

@@ -83,7 +83,10 @@ function _objectSpread2(target) {
   }
 
   return target;
-}var WireLink = {
+}/**
+ * Ternobo WireLink Component
+ */
+var WireLink = {
   name: "WireLink",
   functional: true,
   props: {
@@ -256,7 +259,6 @@ var script$1 = {
     updateComponent: function updateComponent() {
       var _this = this;
 
-      console.log(this.component);
       this.resolveComponent(this.component).then(function (value) {
         _this.componentInstance = value.default;
 
@@ -342,7 +344,7 @@ var __vue_inject_styles__$1 = undefined;
 var __vue_scope_id__$1 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$1 = "data-v-38c6f5a9";
+var __vue_module_identifier__$1 = "data-v-c31acb3c";
 /* functional template */
 
 var __vue_is_functional_template__$1 = false;
@@ -355,14 +357,42 @@ var __vue_is_functional_template__$1 = false;
 var __vue_component__$1 = /*#__PURE__*/normalizeComponent({
   render: __vue_render__$1,
   staticRenderFns: __vue_staticRenderFns__$1
-}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);function testSameOrigin(url) {
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);/**
+ * Check if URL is from Same Origin.
+ * @param {string} url 
+ */
+
+function testSameOrigin(url) {
   var loc = window.location,
       a = document.createElement('a');
   a.href = url;
   return a.hostname == loc.hostname && a.port == loc.port && a.protocol == loc.protocol;
 }
+/**
+ * TernoboWire Base Class
+ */
+
 
 var TernoboWire = /*#__PURE__*/function () {
+  _createClass(TernoboWire, null, [{
+    key: "getInstance",
+
+    /**
+     * 
+     * @param {Vue} vm Current Vue Instance
+     * @returns { TernoboWire }
+     */
+    value: function getInstance(vm) {
+      return vm.$store.state.ternoboWireApp;
+    }
+    /**
+     * setup TernoboWire Application. Automatic Setup on WireApp.vue
+     * @param {Vue} application - TernoboWire Application root
+     * @param {object} data - Initial Data.
+     */
+
+  }]);
+
   function TernoboWire(application, data) {
     var _this = this;
 
@@ -379,6 +409,15 @@ var TernoboWire = /*#__PURE__*/function () {
       }
     });
   }
+  /**
+   * Get page data without reredndering Page component 
+   * @param {string} location - request url
+   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document
+   * @param {object} data - request body (object)
+   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
+   * @param {boolean} pushState - if true, push history state
+   */
+
 
   _createClass(TernoboWire, [{
     key: "getData",
@@ -386,9 +425,9 @@ var TernoboWire = /*#__PURE__*/function () {
       var _this2 = this;
 
       var navigateLoading = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-      var type = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'get';
-      var pushState = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : true;
+      var pushState = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+      var data = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+      var type = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'get';
       return new Promise(function (resolve, reject) {
         var onStart = new CustomEvent('ternobo:navigate', {
           detail: {
@@ -445,13 +484,18 @@ var TernoboWire = /*#__PURE__*/function () {
         });
       });
     }
+    /**
+     * Reload current page
+     * @param {object} options - reload options (Documented on TernoboWire-Laravel)
+     */
+
   }, {
     key: "reload",
     value: function reload() {
       var _this3 = this;
 
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var location = window.href;
+      var location = window.location.href;
       var onStart = new CustomEvent('ternobo:navigate', {
         detail: {
           location: location
@@ -459,12 +503,13 @@ var TernoboWire = /*#__PURE__*/function () {
       });
       window.document.dispatchEvent(onStart);
       axios({
-        method: type,
+        method: "GET",
         data: {
           options: options
         },
         url: location,
         headers: {
+          "X-ReloadData": true,
           "X-TernoboWire": true
         }
       }).then(function (response) {
@@ -495,6 +540,15 @@ var TernoboWire = /*#__PURE__*/function () {
         window.document.dispatchEvent(onFinish);
       });
     }
+    /**
+     * Visit URL 
+     * @param {string} location - request url
+     * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document
+     * @param {object} data - request body (object)
+     * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
+     * @param {boolean} pushState - if true, push history state
+     */
+
   }, {
     key: "visit",
     value: function visit(location) {
@@ -572,12 +626,11 @@ var TernoboWire = /*#__PURE__*/function () {
 
   return TernoboWire;
 }();
-
 var plugin = {
   install: function install(Vue) {
     Vue.use(Vuex__default['default']);
     Vue.component("wire-link", WireLink);
-    Vue.directive("infinite-scroll", {
+    Vue.directive("t-infinite-scroll", {
       bind: function bind(el, binding, vnode) {
         el.addEventListener("scroll", function (e) {
           if (el.scrollTop + el.clientHeight >= el.scrollHeight) {
@@ -647,4 +700,4 @@ function store() {
   }
 
   return new Vuex__default['default'].Store(options);
-}exports.default=__vue_component__$1;exports.plugin=plugin;exports.store=store;
+}exports.TernoboWire=TernoboWire;exports.default=__vue_component__$1;exports.plugin=plugin;exports.store=store;

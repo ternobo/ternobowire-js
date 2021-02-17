@@ -567,7 +567,7 @@
     "__docId__": 48,
     "kind": "file",
     "name": "src/entry.js",
-    "content": "import WireLink from \"./Components/WireLink\";\nimport Vuex from 'vuex';\nimport WireApp from \"./WireApp.vue\";\n\n/**\n * Check if URL is from Same Origin.\n * @param {string} url \n */\nfunction testSameOrigin(url) {\n  var loc = window.location,\n    a = document.createElement('a');\n  a.href = url;\n  return a.hostname == loc.hostname &&\n    a.port == loc.port &&\n    a.protocol == loc.protocol;\n}\n\n/**\n * TernoboWire Base Class\n */\nclass TernoboWire {\n\n  /**\n   * setup TernoboWire Application. Automatic Setup on WireApp.vue\n   * @param {Vue} application - TernoboWire Application root\n   * @param {object} data - Initial Data.\n   */\n  constructor(application, data) {\n    this.app = application;\n    this.data = data;\n    window.history.replaceState({ visitId: \"wire\" }, \"\", window.location.href);\n    window.addEventListener('popstate', (event) => {\n      if (JSON.stringify(window.history.state) == JSON.stringify(this.createVisitId())) {\n        this.visit(window.location.href, {}, 'get', false);\n      }\n    })\n  }\n\n  /**\n   * Get page data without reredndering Page component \n   * @param {string} location - request url\n   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document\n   * @param {object} data - request body (object)\n   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)\n   * @param {boolean} pushState - if true, push history state\n   */\n  getData(location, navigateLoading = true, data = {}, type = 'get', pushState = true) {\n    return new Promise((resolve, reject) => {\n      let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });\n      if (navigateLoading) {\n        window.document.dispatchEvent(onStart);\n      }\n      axios({\n        method: type,\n        data: data,\n        url: location,\n        headers: {\n          \"X-TernoboWire\": true\n        }\n      }).then((response) => {\n        resolve(response.data.data);\n        if (response.headers['x-ternobowire']) {\n          if (pushState) {\n            window.history.pushState(this.createVisitId(), \"\", location);\n          }\n          const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });\n          if (navigateLoading) {\n            window.document.dispatchEvent(onLoaded);\n          }\n        }\n      }).catch((err) => {\n        if (!TernoboWire.production) {\n          console.log(err);\n        }\n        reject(err);\n      }).then(() => {\n        if (navigateLoading) {\n          const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });\n          window.document.dispatchEvent(onFinish);\n        }\n        resolve();\n      });\n    });\n  }\n\n  /**\n   * Reload current page\n   * @param {object} options - reload options (Documented on TernoboWire-Laravel)\n   */\n  reload(options = {}) {\n    let location = window.href;\n    let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });\n    window.document.dispatchEvent(onStart);\n    axios({\n      method: type,\n      data: {\n        options: options\n      },\n      url: location,\n      headers: {\n        \"X-TernoboWire\": true\n      }\n    }).then((response) => {\n      if (response.headers['x-ternobowire']) {\n        this.app.$store.commit(\"updatedShared\", response.data.shared);\n        this.loadComponent(response.data.component, response.data.data);\n        const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });\n        window.document.dispatchEvent(onLoaded);\n      } else {\n        window.location.reload();\n      }\n    }).catch((err) => {\n      if (!TernoboWire.production) {\n        console.log(err);\n      }\n    }).then(() => {\n      const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });\n      window.document.dispatchEvent(onFinish);\n    });\n  }\n\n  /**\n   * Visit URL \n   * @param {string} location - request url\n   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document\n   * @param {object} data - request body (object)\n   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)\n   * @param {boolean} pushState - if true, push history state\n   */\n  visit(location, data = {}, type = 'get', pushState = true) {\n    if (!testSameOrigin(location)) {\n      window.open(location);\n    }\n    let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });\n    window.document.dispatchEvent(onStart);\n    axios({\n      method: type,\n      data: data,\n      url: location,\n      headers: {\n        \"X-TernoboWire\": true\n      }\n    }).then((response) => {\n      if (response.headers['x-ternobowire']) {\n        this.app.$store.commit(\"updatedShared\", response.data.shared);\n        this.loadComponent(response.data.component, response.data.data);\n        if (pushState) {\n          window.history.pushState(this.createVisitId(), \"\", location);\n        }\n        const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });\n        window.document.dispatchEvent(onLoaded);\n      } else {\n        window.location = location;\n      }\n    }).catch((err) => {\n      if (!TernoboWire.production) {\n        console.log(err);\n      }\n    }).then(() => {\n      const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });\n      window.document.dispatchEvent(onFinish);\n    });\n  }\n\n  loadComponent(component, data) {\n    this.app.component = component;\n    this.app.data = data;\n    this.app.updateComponent();\n  }\n\n  createVisitId() {\n    this.visitId = { visitId: \"wire\" }\n    return this.visitId\n  }\n}\nexport const plugin = {\n  install(Vue) {\n    Vue.use(Vuex);\n    Vue.component(\"wire-link\", WireLink);\n    Vue.directive(\"infinite-scroll\", {\n      bind(el, binding, vnode) {\n        el.addEventListener(\"scroll\", (e) => {\n          if (el.scrollTop + el.clientHeight >= el.scrollHeight) {\n            binding.value();\n          }\n        });\n      }\n    });\n    Vue.directive('click-outside', {\n      bind(el, binding, vnode) {\n        let event = event => vnode.context.$emit(binding.expression, event);\n        document.body.addEventListener('click', event)\n      }\n    });\n  }\n}\n\n\nexport default WireApp;\n\nexport function store(options = { state: null, getters: {}, mutations: null }) {\n  if (options.state != null && typeof (options.state) == \"object\") {\n    options.state.user = null;\n    options.state.ternoboWireApp = null;\n    options.state.shared = {};\n  } else {\n    options.state = {\n      user: {},\n      ternoboWireApp: null,\n      shared: {},\n    };\n  }\n  if (options.mutations != null && typeof (options.mutations) == \"object\") {\n    options.mutations.setupApp = function (state, payload) {\n      state.ternoboWireApp = new TernoboWire(payload.app, payload.data);\n    };\n\n    options.mutations.updatedShared = function (state, payload) {\n      state.shared = payload;\n    };\n\n    options.mutations.userUpdate = function (state) {\n      axios.post(\"/ternobo-wire/get-user\").then((response) => {\n        state.user = response.data.user\n      });\n    };\n  } else {\n    options.mutations = {\n      updatedShared(state, payload) {\n        state.shared = payload;\n      },\n      userUpdate(state) {\n        axios.post(\"/ternobo-wire/get-user\").then((response) => {\n          state.user = response.data.user\n        });\n      },\n      setupApp(state, payload) {\n        state.ternoboWireApp = new TernoboWire(payload.app, payload.data);\n      }\n    };\n  }\n  return new Vuex.Store(options);\n};",
+    "content": "import WireLink from \"./Components/WireLink\";\nimport Vuex from 'vuex';\nimport WireApp from \"./WireApp.vue\";\n\n/**\n * Check if URL is from Same Origin.\n * @param {string} url \n */\nfunction testSameOrigin(url) {\n  var loc = window.location,\n    a = document.createElement('a');\n  a.href = url;\n  return a.hostname == loc.hostname &&\n    a.port == loc.port &&\n    a.protocol == loc.protocol;\n}\n\n/**\n * TernoboWire Base Class\n */\nexport class TernoboWire {\n\n  /**\n   * \n   * @param {Vue} vm Current Vue Instance\n   * @returns { TernoboWire }\n   */\n  static getInstance(vm) {\n    return vm.$store.state.ternoboWireApp;\n  }\n\n  /**\n   * setup TernoboWire Application. Automatic Setup on WireApp.vue\n   * @param {Vue} application - TernoboWire Application root\n   * @param {object} data - Initial Data.\n   */\n  constructor(application, data) {\n    this.app = application;\n    this.data = data;\n    window.history.replaceState({ visitId: \"wire\" }, \"\", window.location.href);\n    window.addEventListener('popstate', (event) => {\n      if (JSON.stringify(window.history.state) == JSON.stringify(this.createVisitId())) {\n        this.visit(window.location.href, {}, 'get', false);\n      }\n    })\n  }\n\n  /**\n   * Get page data without reredndering Page component \n   * @param {string} location - request url\n   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document\n   * @param {object} data - request body (object)\n   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)\n   * @param {boolean} pushState - if true, push history state\n   */\n  getData(location, navigateLoading = true, data = {}, type = 'get', pushState = true) {\n    return new Promise((resolve, reject) => {\n      let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });\n      if (navigateLoading) {\n        window.document.dispatchEvent(onStart);\n      }\n      axios({\n        method: type,\n        data: data,\n        url: location,\n        headers: {\n          \"X-TernoboWire\": true\n        }\n      }).then((response) => {\n        resolve(response.data.data);\n        if (response.headers['x-ternobowire']) {\n          if (pushState) {\n            window.history.pushState(this.createVisitId(), \"\", location);\n          }\n          const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });\n          if (navigateLoading) {\n            window.document.dispatchEvent(onLoaded);\n          }\n        }\n      }).catch((err) => {\n        if (!TernoboWire.production) {\n          console.log(err);\n        }\n        reject(err);\n      }).then(() => {\n        if (navigateLoading) {\n          const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });\n          window.document.dispatchEvent(onFinish);\n        }\n        resolve();\n      });\n    });\n  }\n\n  /**\n   * Reload current page\n   * @param {object} options - reload options (Documented on TernoboWire-Laravel)\n   */\n  reload(options = {}) {\n    let location = window.location.href;\n    let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });\n    window.document.dispatchEvent(onStart);\n    axios({\n      method: \"GET\",\n      data: {\n        options: options\n      },\n      url: location,\n      headers: {\n        \"X-ReloadData\": true,\n        \"X-TernoboWire\": true\n      }\n    }).then((response) => {\n      if (response.headers['x-ternobowire']) {\n        this.app.$store.commit(\"updatedShared\", response.data.shared);\n        this.loadComponent(response.data.component, response.data.data);\n        const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });\n        window.document.dispatchEvent(onLoaded);\n      } else {\n        window.location.reload();\n      }\n    }).catch((err) => {\n      if (!TernoboWire.production) {\n        console.log(err);\n      }\n    }).then(() => {\n      const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });\n      window.document.dispatchEvent(onFinish);\n    });\n  }\n\n  /**\n   * Visit URL \n   * @param {string} location - request url\n   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document\n   * @param {object} data - request body (object)\n   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)\n   * @param {boolean} pushState - if true, push history state\n   */\n  visit(location, data = {}, type = 'get', pushState = true) {\n    if (!testSameOrigin(location)) {\n      window.open(location);\n    }\n    let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });\n    window.document.dispatchEvent(onStart);\n    axios({\n      method: type,\n      data: data,\n      url: location,\n      headers: {\n        \"X-TernoboWire\": true\n      }\n    }).then((response) => {\n      if (response.headers['x-ternobowire']) {\n        this.app.$store.commit(\"updatedShared\", response.data.shared);\n        this.loadComponent(response.data.component, response.data.data);\n        if (pushState) {\n          window.history.pushState(this.createVisitId(), \"\", location);\n        }\n        const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });\n        window.document.dispatchEvent(onLoaded);\n      } else {\n        window.location = location;\n      }\n    }).catch((err) => {\n      if (!TernoboWire.production) {\n        console.log(err);\n      }\n    }).then(() => {\n      const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });\n      window.document.dispatchEvent(onFinish);\n    });\n  }\n\n  loadComponent(component, data) {\n    this.app.component = component;\n    this.app.data = data;\n    this.app.updateComponent();\n  }\n\n  createVisitId() {\n    this.visitId = { visitId: \"wire\" }\n    return this.visitId\n  }\n}\nexport const plugin = {\n  install(Vue) {\n    Vue.use(Vuex);\n    Vue.component(\"wire-link\", WireLink);\n    Vue.directive(\"infinite-scroll\", {\n      bind(el, binding, vnode) {\n        el.addEventListener(\"scroll\", (e) => {\n          if (el.scrollTop + el.clientHeight >= el.scrollHeight) {\n            binding.value();\n          }\n        });\n      }\n    });\n    Vue.directive('click-outside', {\n      bind(el, binding, vnode) {\n        let event = event => vnode.context.$emit(binding.expression, event);\n        document.body.addEventListener('click', event)\n      }\n    });\n  }\n}\n\n\nexport default WireApp;\n\nexport function store(options = { state: null, getters: {}, mutations: null }) {\n  if (options.state != null && typeof (options.state) == \"object\") {\n    options.state.user = null;\n    options.state.ternoboWireApp = null;\n    options.state.shared = {};\n  } else {\n    options.state = {\n      user: {},\n      ternoboWireApp: null,\n      shared: {},\n    };\n  }\n  if (options.mutations != null && typeof (options.mutations) == \"object\") {\n    options.mutations.setupApp = function (state, payload) {\n      state.ternoboWireApp = new TernoboWire(payload.app, payload.data);\n    };\n\n    options.mutations.updatedShared = function (state, payload) {\n      state.shared = payload;\n    };\n\n    options.mutations.userUpdate = function (state) {\n      axios.post(\"/ternobo-wire/get-user\").then((response) => {\n        state.user = response.data.user\n      });\n    };\n  } else {\n    options.mutations = {\n      updatedShared(state, payload) {\n        state.shared = payload;\n      },\n      userUpdate(state) {\n        axios.post(\"/ternobo-wire/get-user\").then((response) => {\n          state.user = response.data.user\n        });\n      },\n      setupApp(state, payload) {\n        state.ternoboWireApp = new TernoboWire(payload.app, payload.data);\n      }\n    };\n  }\n  return new Vuex.Store(options);\n};",
     "static": true,
     "longname": "/home/soroosh/Projects/wire-js/src/entry.js",
     "access": "public",
@@ -616,16 +616,54 @@
     "static": true,
     "longname": "src/entry.js~TernoboWire",
     "access": "public",
-    "export": false,
+    "export": true,
     "importPath": "wire-js/src/entry.js",
-    "importStyle": null,
+    "importStyle": "{TernoboWire}",
     "description": "TernoboWire Base Class",
     "lineNumber": 21,
-    "interface": false,
-    "ignore": true
+    "interface": false
   },
   {
     "__docId__": 51,
+    "kind": "method",
+    "name": "getInstance",
+    "memberof": "src/entry.js~TernoboWire",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/entry.js~TernoboWire.getInstance",
+    "access": "public",
+    "description": "",
+    "lineNumber": 28,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{ TernoboWire }"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "Vue"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "vm",
+        "description": "Current Vue Instance"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        " TernoboWire "
+      ],
+      "spread": false,
+      "description": ""
+    }
+  },
+  {
+    "__docId__": 52,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/entry.js~TernoboWire",
@@ -635,7 +673,7 @@
     "longname": "src/entry.js~TernoboWire#constructor",
     "access": "public",
     "description": "setup TernoboWire Application. Automatic Setup on WireApp.vue",
-    "lineNumber": 28,
+    "lineNumber": 37,
     "params": [
       {
         "nullable": null,
@@ -660,7 +698,7 @@
     ]
   },
   {
-    "__docId__": 52,
+    "__docId__": 53,
     "kind": "member",
     "name": "app",
     "memberof": "src/entry.js~TernoboWire",
@@ -668,24 +706,7 @@
     "longname": "src/entry.js~TernoboWire#app",
     "access": "public",
     "description": null,
-    "lineNumber": 29,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 53,
-    "kind": "member",
-    "name": "data",
-    "memberof": "src/entry.js~TernoboWire",
-    "static": false,
-    "longname": "src/entry.js~TernoboWire#data",
-    "access": "public",
-    "description": null,
-    "lineNumber": 30,
+    "lineNumber": 38,
     "undocument": true,
     "type": {
       "types": [
@@ -695,6 +716,23 @@
   },
   {
     "__docId__": 54,
+    "kind": "member",
+    "name": "data",
+    "memberof": "src/entry.js~TernoboWire",
+    "static": false,
+    "longname": "src/entry.js~TernoboWire#data",
+    "access": "public",
+    "description": null,
+    "lineNumber": 39,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 55,
     "kind": "method",
     "name": "getData",
     "memberof": "src/entry.js~TernoboWire",
@@ -704,7 +742,7 @@
     "longname": "src/entry.js~TernoboWire#getData",
     "access": "public",
     "description": "Get page data without reredndering Page component ",
-    "lineNumber": 47,
+    "lineNumber": 56,
     "params": [
       {
         "nullable": null,
@@ -764,7 +802,7 @@
     }
   },
   {
-    "__docId__": 55,
+    "__docId__": 56,
     "kind": "method",
     "name": "reload",
     "memberof": "src/entry.js~TernoboWire",
@@ -774,7 +812,7 @@
     "longname": "src/entry.js~TernoboWire#reload",
     "access": "public",
     "description": "Reload current page",
-    "lineNumber": 90,
+    "lineNumber": 99,
     "params": [
       {
         "nullable": null,
@@ -790,7 +828,7 @@
     "return": null
   },
   {
-    "__docId__": 56,
+    "__docId__": 57,
     "kind": "method",
     "name": "visit",
     "memberof": "src/entry.js~TernoboWire",
@@ -800,7 +838,7 @@
     "longname": "src/entry.js~TernoboWire#visit",
     "access": "public",
     "description": "Visit URL ",
-    "lineNumber": 130,
+    "lineNumber": 140,
     "params": [
       {
         "nullable": null,
@@ -856,7 +894,7 @@
     "return": null
   },
   {
-    "__docId__": 57,
+    "__docId__": 58,
     "kind": "method",
     "name": "loadComponent",
     "memberof": "src/entry.js~TernoboWire",
@@ -866,7 +904,7 @@
     "longname": "src/entry.js~TernoboWire#loadComponent",
     "access": "public",
     "description": null,
-    "lineNumber": 165,
+    "lineNumber": 175,
     "undocument": true,
     "params": [
       {
@@ -885,7 +923,7 @@
     "return": null
   },
   {
-    "__docId__": 58,
+    "__docId__": 59,
     "kind": "method",
     "name": "createVisitId",
     "memberof": "src/entry.js~TernoboWire",
@@ -895,7 +933,7 @@
     "longname": "src/entry.js~TernoboWire#createVisitId",
     "access": "public",
     "description": null,
-    "lineNumber": 171,
+    "lineNumber": 181,
     "undocument": true,
     "params": [],
     "return": {
@@ -905,7 +943,7 @@
     }
   },
   {
-    "__docId__": 59,
+    "__docId__": 60,
     "kind": "member",
     "name": "visitId",
     "memberof": "src/entry.js~TernoboWire",
@@ -913,7 +951,7 @@
     "longname": "src/entry.js~TernoboWire#visitId",
     "access": "public",
     "description": null,
-    "lineNumber": 172,
+    "lineNumber": 182,
     "undocument": true,
     "type": {
       "types": [
@@ -922,7 +960,7 @@
     }
   },
   {
-    "__docId__": 60,
+    "__docId__": 61,
     "kind": "variable",
     "name": "plugin",
     "memberof": "src/entry.js",
@@ -933,7 +971,7 @@
     "importPath": "wire-js/src/entry.js",
     "importStyle": "{plugin}",
     "description": null,
-    "lineNumber": 176,
+    "lineNumber": 186,
     "undocument": true,
     "type": {
       "types": [
@@ -942,7 +980,7 @@
     }
   },
   {
-    "__docId__": 61,
+    "__docId__": 62,
     "kind": "function",
     "name": "store",
     "memberof": "src/entry.js",
@@ -955,7 +993,7 @@
     "importPath": "wire-js/src/entry.js",
     "importStyle": "{store}",
     "description": null,
-    "lineNumber": 201,
+    "lineNumber": 211,
     "undocument": true,
     "params": [
       {

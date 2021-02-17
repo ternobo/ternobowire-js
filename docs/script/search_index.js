@@ -1,5 +1,11 @@
 window.esdocSearchIndex = [
   [
+    "wire-js/src/entry.js~ternobowire",
+    "class/src/entry.js~TernoboWire.html",
+    "<span>TernoboWire</span> <span class=\"search-result-import-path\">wire-js/src/entry.js</span>",
+    "class"
+  ],
+  [
     "wire-js/src/entry.js~plugin",
     "variable/index.html#static-variable-plugin",
     "<span>plugin</span> <span class=\"search-result-import-path\">wire-js/src/entry.js</span>",
@@ -298,5 +304,65 @@ window.esdocSearchIndex = [
     "file/src/entry.js.html",
     "src/entry.js",
     "file"
+  ],
+  [
+    "src/entry.js~ternobowire#app",
+    "class/src/entry.js~TernoboWire.html#instance-member-app",
+    "src/entry.js~TernoboWire#app",
+    "member"
+  ],
+  [
+    "src/entry.js~ternobowire#constructor",
+    "class/src/entry.js~TernoboWire.html#instance-constructor-constructor",
+    "src/entry.js~TernoboWire#constructor",
+    "method"
+  ],
+  [
+    "src/entry.js~ternobowire#createvisitid",
+    "class/src/entry.js~TernoboWire.html#instance-method-createVisitId",
+    "src/entry.js~TernoboWire#createVisitId",
+    "method"
+  ],
+  [
+    "src/entry.js~ternobowire#data",
+    "class/src/entry.js~TernoboWire.html#instance-member-data",
+    "src/entry.js~TernoboWire#data",
+    "member"
+  ],
+  [
+    "src/entry.js~ternobowire#getdata",
+    "class/src/entry.js~TernoboWire.html#instance-method-getData",
+    "src/entry.js~TernoboWire#getData",
+    "method"
+  ],
+  [
+    "src/entry.js~ternobowire#loadcomponent",
+    "class/src/entry.js~TernoboWire.html#instance-method-loadComponent",
+    "src/entry.js~TernoboWire#loadComponent",
+    "method"
+  ],
+  [
+    "src/entry.js~ternobowire#reload",
+    "class/src/entry.js~TernoboWire.html#instance-method-reload",
+    "src/entry.js~TernoboWire#reload",
+    "method"
+  ],
+  [
+    "src/entry.js~ternobowire#visit",
+    "class/src/entry.js~TernoboWire.html#instance-method-visit",
+    "src/entry.js~TernoboWire#visit",
+    "method"
+  ],
+  [
+    "src/entry.js~ternobowire#visitid",
+    "class/src/entry.js~TernoboWire.html#instance-member-visitId",
+    "src/entry.js~TernoboWire#visitId",
+    "member"
+  ],
+  [
+    "src/entry.js~ternobowire.getinstance",
+    "class/src/entry.js~TernoboWire.html#static-method-getInstance",
+    "src/entry.js~TernoboWire.getInstance",
+    "method"
   ]
 ]

@@ -29,7 +29,8 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-store">store</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/entry.js~TernoboWire.html">TernoboWire</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-store">store</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-plugin">plugin</a></span></span></li>
 </ul>
 </div>
@@ -56,7 +57,16 @@ function testSameOrigin(url) {
 /**
  * TernoboWire Base Class
  */
-class TernoboWire {
+export class TernoboWire {
+
+  /**
+   * 
+   * @param {Vue} vm Current Vue Instance
+   * @returns { TernoboWire }
+   */
+  static getInstance(vm) {
+    return vm.$store.state.ternoboWireApp;
+  }
 
   /**
    * setup TernoboWire Application. Automatic Setup on WireApp.vue
@@ -126,16 +136,17 @@ class TernoboWire {
    * @param {object} options - reload options (Documented on TernoboWire-Laravel)
    */
   reload(options = {}) {
-    let location = window.href;
+    let location = window.location.href;
     let onStart = new CustomEvent(&apos;ternobo:navigate&apos;, { detail: { location: location } });
     window.document.dispatchEvent(onStart);
     axios({
-      method: type,
+      method: &quot;GET&quot;,
       data: {
         options: options
       },
       url: location,
       headers: {
+        &quot;X-ReloadData&quot;: true,
         &quot;X-TernoboWire&quot;: true
       }
     }).then((response) =&gt; {

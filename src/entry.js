@@ -18,7 +18,16 @@ function testSameOrigin(url) {
 /**
  * TernoboWire Base Class
  */
-class TernoboWire {
+export class TernoboWire {
+
+  /**
+   * 
+   * @param {Vue} vm Current Vue Instance
+   * @returns { TernoboWire }
+   */
+  static getInstance(vm) {
+    return vm.$store.state.ternoboWireApp;
+  }
 
   /**
    * setup TernoboWire Application. Automatic Setup on WireApp.vue
@@ -44,7 +53,7 @@ class TernoboWire {
    * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
    * @param {boolean} pushState - if true, push history state
    */
-  getData(location, navigateLoading = true, data = {}, type = 'get', pushState = true) {
+  getData(location, navigateLoading = true, pushState = false, data = {}, type = 'get') {
     return new Promise((resolve, reject) => {
       let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });
       if (navigateLoading) {
@@ -88,16 +97,17 @@ class TernoboWire {
    * @param {object} options - reload options (Documented on TernoboWire-Laravel)
    */
   reload(options = {}) {
-    let location = window.href;
+    let location = window.location.href;
     let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });
     window.document.dispatchEvent(onStart);
     axios({
-      method: type,
+      method: "GET",
       data: {
         options: options
       },
       url: location,
       headers: {
+        "X-ReloadData": true,
         "X-TernoboWire": true
       }
     }).then((response) => {
@@ -177,7 +187,7 @@ export const plugin = {
   install(Vue) {
     Vue.use(Vuex);
     Vue.component("wire-link", WireLink);
-    Vue.directive("infinite-scroll", {
+    Vue.directive("t-infinite-scroll", {
       bind(el, binding, vnode) {
         el.addEventListener("scroll", (e) => {
           if (el.scrollTop + el.clientHeight >= el.scrollHeight) {

@@ -11,7 +11,6 @@ import AppLayout from "@/Layouts/AppLayout";
 export default {
 	methods: {
 		updateComponent() {
-			console.log(this.component);
 			this.resolveComponent(this.component).then((value) => {
 				this.componentInstance = value.default;
 				if (this.componentInstance.layout != null) {
