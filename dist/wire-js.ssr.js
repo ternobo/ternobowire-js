@@ -306,7 +306,7 @@ var script$1 = {
       data: this.data,
       app: this
     });
-    this.$store.commit("updatedShared", this.initialData.shared);
+    this.$store.commit("updateShared", this.initialData.shared);
     this.$nextTick(function () {
       _this2.updateComponent();
     });
@@ -344,7 +344,7 @@ var __vue_inject_styles__$1 = undefined;
 var __vue_scope_id__$1 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$1 = "data-v-c31acb3c";
+var __vue_module_identifier__$1 = "data-v-7d6a5d5c";
 /* functional template */
 
 var __vue_is_functional_template__$1 = false;
@@ -674,23 +674,35 @@ function store() {
       state.ternoboWireApp = new TernoboWire(payload.app, payload.data);
     };
 
-    options.mutations.updatedShared = function (state, payload) {
+    options.mutations.updateShared = function (state, payload) {
       state.shared = payload;
     };
 
     options.mutations.userUpdate = function (state) {
       axios.post("/ternobo-wire/get-user").then(function (response) {
         state.user = response.data.user;
+        var onUserLoad = new CustomEvent('ternobo:userloaded', {
+          detail: {
+            user: response.data.user
+          }
+        });
+        window.document.dispatchEvent(onUserLoad);
       });
     };
   } else {
     options.mutations = {
-      updatedShared: function updatedShared(state, payload) {
+      updateShared: function updateShared(state, payload) {
         state.shared = payload;
       },
       userUpdate: function userUpdate(state) {
         axios.post("/ternobo-wire/get-user").then(function (response) {
           state.user = response.data.user;
+          var onUserLoad = new CustomEvent('ternobo:userloaded', {
+            detail: {
+              user: response.data.user
+            }
+          });
+          window.document.dispatchEvent(onUserLoad);
         });
       },
       setupApp: function setupApp(state, payload) {

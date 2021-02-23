@@ -225,23 +225,27 @@ export function store(options = { state: null, getters: {}, mutations: null }) {
       state.ternoboWireApp = new TernoboWire(payload.app, payload.data);
     };
 
-    options.mutations.updatedShared = function (state, payload) {
+    options.mutations.updateShared = function (state, payload) {
       state.shared = payload;
     };
 
     options.mutations.userUpdate = function (state) {
       axios.post("/ternobo-wire/get-user").then((response) => {
         state.user = response.data.user
+        const onUserLoad = new CustomEvent('ternobo:userloaded', { detail: { user: response.data.user } });
+        window.document.dispatchEvent(onUserLoad);
       });
     };
   } else {
     options.mutations = {
-      updatedShared(state, payload) {
+      updateShared(state, payload) {
         state.shared = payload;
       },
       userUpdate(state) {
         axios.post("/ternobo-wire/get-user").then((response) => {
-          state.user = response.data.user
+          state.user = response.data.user;
+          const onUserLoad = new CustomEvent('ternobo:userloaded', { detail: { user: response.data.user } });
+          window.document.dispatchEvent(onUserLoad);
         });
       },
       setupApp(state, payload) {

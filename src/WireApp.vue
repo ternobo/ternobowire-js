@@ -48,7 +48,7 @@ export default {
 		this.component = this.initialComponent;
 		this.$store.commit("userUpdate");
 		this.$store.commit("setupApp", { data: this.data, app: this });
-		this.$store.commit("updatedShared", this.initialData.shared);
+		this.$store.commit("updateShared", this.initialData.shared);
 		this.$nextTick(() => {
 			this.updateComponent();
 		});
