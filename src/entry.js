@@ -112,7 +112,7 @@ export class TernoboWire {
       }
     }).then((response) => {
       if (response.headers['x-ternobowire']) {
-        this.app.$store.commit("updatedShared", response.data.shared);
+        this.app.$store.commit("updateShared", response.data.shared);
         this.loadComponent(response.data.component, response.data.data);
         const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });
         window.document.dispatchEvent(onLoaded);
@@ -152,7 +152,7 @@ export class TernoboWire {
       }
     }).then((response) => {
       if (response.headers['x-ternobowire']) {
-        this.app.$store.commit("updatedShared", response.data.shared);
+        this.app.$store.commit("updateShared", response.data.shared);
         this.loadComponent(response.data.component, response.data.data);
         if (pushState) {
           window.history.pushState(this.createVisitId(), "", location);
@@ -224,6 +224,13 @@ export function store(options = { state: {}, actions: {}, mutations: {} }) {
           context.commit("setUser", response.data.user);
           const onUserLoad = new CustomEvent('ternobo:userloaded', { detail: { user: response.data.user } });
           window.document.dispatchEvent(onUserLoad);
+        });
+      },
+      loadShared(context) {
+        axios.post("/ternobo-wire/get-shared").then((response) => {
+          context.commit("updateShared", response.data.shared);
+          const onSharedDataLoad = new CustomEvent('ternobo:sharedataloaded', { detail: { user: response.data.user } });
+          window.document.dispatchEvent(onSharedDataLoad);
         });
       }
     },

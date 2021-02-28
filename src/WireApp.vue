@@ -1,7 +1,7 @@
 <template>
-	<component :is="layout" v-if="ready" :loading="loading">
+	<component :is="layout" :loading="loading">
 		<transition name="fade" mode="out-in">
-			<component :is="componentInstance" v-bind="propsToBind"></component>
+			<component v-if="ready" :is="componentInstance" v-bind="propsToBind"></component>
 		</transition>
 	</component>
 </template>
