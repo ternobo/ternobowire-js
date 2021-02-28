@@ -1,5 +1,5 @@
 <template>
-	<component :is="layout" v-if="ready">
+	<component :is="layout" v-if="ready" :loading="loading">
 		<transition name="fade" mode="out-in">
 			<component :is="componentInstance" v-bind="propsToBind"></component>
 		</transition>
@@ -35,6 +35,7 @@ export default {
 	},
 	data() {
 		return {
+			loading: true,
 			propsToBind: {},
 			component: null,
 			componentInstance: null,
@@ -44,15 +45,19 @@ export default {
 		};
 	},
 	created() {
-		this.data = this.initialData.data;
-		this.component = this.initialComponent;
-		this.$store.commit("userUpdate");
-		this.$store.commit("setupApp", { data: this.data, app: this });
-		this.$store.commit("updateShared", this.initialData.shared);
-		this.$nextTick(() => {
-			this.updateComponent();
+		axios.post("/ternobo-wire/get-data/" + this.dataToken).then((response) => {
+			let data = response.data;
+			this.data = data.data;
+			this.component = data.component;
+			this.$store.commit("updateShared", data.shared);
+			this.$nextTick(() => {
+				this.updateComponent();
+			});
+			this.loading = false;
 		});
+		this.$store.dispatch("loadUser");
+		this.$store.commit("setupApp", { data: this.data, app: this });
 	},
-	props: ["initialData", "resolveComponent", "initialComponent"],
+	props: ["dataToken", "resolveComponent"],
 };
 </script>

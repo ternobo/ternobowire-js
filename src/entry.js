@@ -208,50 +208,38 @@ export const plugin = {
 
 export default WireApp;
 
-export function store(options = { state: null, getters: {}, mutations: null }) {
-  if (options.state != null && typeof (options.state) == "object") {
-    options.state.user = null;
-    options.state.ternoboWireApp = null;
-    options.state.shared = {};
-  } else {
-    options.state = {
+export function store(options = { state: {}, actions: {}, mutations: {} }) {
+  let storeOptions = {
+    ...options,
+    state: {
+      ...options.state,
       user: {},
       ternoboWireApp: null,
       shared: {},
-    };
-  }
-  if (options.mutations != null && typeof (options.mutations) == "object") {
-    options.mutations.setupApp = function (state, payload) {
-      state.ternoboWireApp = new TernoboWire(payload.app, payload.data);
-    };
-
-    options.mutations.updateShared = function (state, payload) {
-      state.shared = payload;
-    };
-
-    options.mutations.userUpdate = function (state) {
-      axios.post("/ternobo-wire/get-user").then((response) => {
-        state.user = response.data.user
-        const onUserLoad = new CustomEvent('ternobo:userloaded', { detail: { user: response.data.user } });
-        window.document.dispatchEvent(onUserLoad);
-      });
-    };
-  } else {
-    options.mutations = {
-      updateShared(state, payload) {
-        state.shared = payload;
-      },
-      userUpdate(state) {
+    },
+    actions: {
+      ...options.actions,
+      loadUser(context) {
         axios.post("/ternobo-wire/get-user").then((response) => {
-          state.user = response.data.user;
+          context.commit("setUser", response.data.user);
           const onUserLoad = new CustomEvent('ternobo:userloaded', { detail: { user: response.data.user } });
           window.document.dispatchEvent(onUserLoad);
         });
+      }
+    },
+    mutations: {
+      ...options.mutations,
+      setUser(state, payload) {
+        state.user = payload;
       },
       setupApp(state, payload) {
         state.ternoboWireApp = new TernoboWire(payload.app, payload.data);
+      },
+      updateShared(state, payload) {
+        state.shared = payload
       }
-    };
-  }
-  return new Vuex.Store(options);
+    }
+  };
+
+  return new Vuex.Store(storeOptions);
 };

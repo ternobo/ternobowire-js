@@ -33,7 +33,6 @@ export default {
             node.parent.$store.state.ternoboWireApp.visit(props.href, {
                 method: props.method
             });
-            console.log
         }
 
         return h(props.as, {
