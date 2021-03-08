@@ -33,12 +33,11 @@ var WireLink = {
     let props = node.props,
         data = node.data,
         children = node.children;
+    let requestData = props.data ? props.data : {};
 
     const visit = event => {
       event.preventDefault();
-      node.parent.$store.state.ternoboWireApp.visit(props.href, {
-        method: props.method
-      });
+      node.parent.$store.state.ternoboWireApp.visit(props.href, requestData, props.method);
     };
 
     return h(props.as, { ...data,

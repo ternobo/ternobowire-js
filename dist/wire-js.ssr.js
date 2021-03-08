@@ -99,12 +99,11 @@ var WireLink = {
     var props = node.props,
         data = node.data,
         children = node.children;
+    var requestData = props.data ? props.data : {};
 
     var visit = function visit(event) {
       event.preventDefault();
-      node.parent.$store.state.ternoboWireApp.visit(props.href, {
-        method: props.method
-      });
+      node.parent.$store.state.ternoboWireApp.visit(props.href, requestData, props.method);
     };
 
     return h(props.as, _objectSpread2(_objectSpread2({}, data), {}, {
