@@ -1,5 +1,5 @@
 {
-  "name": "wire-js",
+  "name": "ternobowire-js",
   "version": "1.0.0",
   "description": "Use ServerSide Routing, And server-driven data sharing in VueJs",
   "author": "Soroosh Tanzadeh <soroosh@ternobo.com>",
