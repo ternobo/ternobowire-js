@@ -1,14 +1,17 @@
 {
   "name": "wire-js",
   "version": "1.0.0",
-  "description": "",
+  "description": "Use ServerSide Routing, And server-driven data sharing in VueJs",
+  "author": "Soroosh Tanzadeh <soroosh@ternobo.com>",
+  "license": "MIT",
   "main": "dist/wire-js.ssr.js",
   "browser": "dist/wire-js.esm.js",
   "module": "dist/wire-js.esm.js",
   "unpkg": "dist/wire-js.min.js",
   "files": [
     "dist/*",
-    "src/**/*.vue"
+    "src/**",
+    "README.md"
   ],
   "scripts": {
     "serve": "vue-cli-service serve dev/serve.js",
