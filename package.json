@@ -1,6 +1,6 @@
 {
   "name": "ternobowire-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Use ServerSide Routing, And server-driven data sharing in VueJs",
   "author": "Soroosh Tanzadeh <soroosh@ternobo.com>",
   "license": "MIT",
