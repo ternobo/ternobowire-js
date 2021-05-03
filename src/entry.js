@@ -34,16 +34,24 @@ export class TernoboWire {
    * @param {Vue} application - TernoboWire Application root
    * @param {object} data - Initial Data.
    */
-  constructor(application, data) {
+  constructor(application, component, data) {
     this.app = application;
     this.data = data;
-    window.history.replaceState({ visitId: "wire" }, "", window.location.href);
+    window.history.replaceState(this.createVisitId({
+      component: component,
+      data: data
+    }), "", window.location.href);
     window.addEventListener('popstate', (event) => {
-      if (JSON.stringify(window.history.state) == JSON.stringify(this.createVisitId())) {
-        this.visit(window.location.href, {}, 'get', false);
+      let state = event.state;
+      if (state.visitId == "wire") {
+        window.scrollTo(0, 0);
+        window.history.replaceState(event.state, "", window.location.href);
+        this.loadComponent(state.data.component, state.data.data);
       }
     })
   }
+
+
 
   /**
    * Get page data without reredndering Page component 
@@ -70,7 +78,7 @@ export class TernoboWire {
         resolve(response.data.data);
         if (response.headers['x-ternobowire']) {
           if (pushState) {
-            window.history.pushState(this.createVisitId(), "", location);
+            window.history.pushState(this.createVisitId(response.data), "", location);
           }
           const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });
           if (navigateLoading) {
@@ -155,7 +163,7 @@ export class TernoboWire {
         this.app.$store.commit("updateShared", response.data.shared);
         this.loadComponent(response.data.component, response.data.data);
         if (pushState) {
-          window.history.pushState(this.createVisitId(), "", location);
+          window.history.pushState(this.createVisitId(response.data), "", location);
         }
         const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });
         window.document.dispatchEvent(onLoaded);
@@ -178,8 +186,8 @@ export class TernoboWire {
     this.app.updateComponent();
   }
 
-  createVisitId() {
-    this.visitId = { visitId: "wire" }
+  createVisitId(data) {
+    this.visitId = { data: data, visitId: "wire" }
     return this.visitId
   }
 }
@@ -240,7 +248,7 @@ export function store(options = { state: {}, actions: {}, mutations: {} }) {
         state.user = payload;
       },
       setupApp(state, payload) {
-        state.ternoboWireApp = new TernoboWire(payload.app, payload.data);
+        state.ternoboWireApp = new TernoboWire(payload.app, payload.component, payload.data);
       },
       updateShared(state, payload) {
         state.shared = payload

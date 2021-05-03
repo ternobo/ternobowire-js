@@ -54,9 +54,9 @@ export default {
 				this.updateComponent();
 			});
 			this.loading = false;
+			this.$store.dispatch("loadUser");
+			this.$store.commit("setupApp", { data: this.data, component: this.component, app: this });
 		});
-		this.$store.dispatch("loadUser");
-		this.$store.commit("setupApp", { data: this.data, app: this });
 	},
 	props: ["dataToken", "resolveComponent"],
 };

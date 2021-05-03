@@ -346,11 +346,14 @@ var script$1 = {
       });
 
       _this2.loading = false;
-    });
-    this.$store.dispatch("loadUser");
-    this.$store.commit("setupApp", {
-      data: this.data,
-      app: this
+
+      _this2.$store.dispatch("loadUser");
+
+      _this2.$store.commit("setupApp", {
+        data: _this2.data,
+        component: _this2.component,
+        app: _this2
+      });
     });
   },
   props: ["dataToken", "resolveComponent"]
@@ -389,7 +392,7 @@ var __vue_inject_styles__$1 = undefined;
 var __vue_scope_id__$1 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$1 = "data-v-53fb0bf1";
+var __vue_module_identifier__$1 = "data-v-4971da4a";
 /* functional template */
 
 var __vue_is_functional_template__$1 = false;
@@ -438,19 +441,25 @@ var TernoboWire = /*#__PURE__*/function () {
 
   }]);
 
-  function TernoboWire(application, data) {
+  function TernoboWire(application, component, data) {
     var _this = this;
 
     _classCallCheck(this, TernoboWire);
 
     this.app = application;
     this.data = data;
-    window.history.replaceState({
-      visitId: "wire"
-    }, "", window.location.href);
+    window.history.replaceState(this.createVisitId({
+      component: component,
+      data: data
+    }), "", window.location.href);
     window.addEventListener('popstate', function (event) {
-      if (JSON.stringify(window.history.state) == JSON.stringify(_this.createVisitId())) {
-        _this.visit(window.location.href, {}, 'get', false);
+      var state = event.state;
+
+      if (state.visitId == "wire") {
+        window.scrollTo(0, 0);
+        window.history.replaceState(event.state, "", window.location.href);
+
+        _this.loadComponent(state.data.component, state.data.data);
       }
     });
   }
@@ -496,7 +505,7 @@ var TernoboWire = /*#__PURE__*/function () {
 
           if (response.headers['x-ternobowire']) {
             if (pushState) {
-              window.history.pushState(_this2.createVisitId(), "", location);
+              window.history.pushState(_this2.createVisitId(response.data), "", location);
             }
 
             var onLoaded = new CustomEvent('ternobo:loaded', {
@@ -627,7 +636,7 @@ var TernoboWire = /*#__PURE__*/function () {
           _this4.loadComponent(response.data.component, response.data.data);
 
           if (pushState) {
-            window.history.pushState(_this4.createVisitId(), "", location);
+            window.history.pushState(_this4.createVisitId(response.data), "", location);
           }
 
           var onLoaded = new CustomEvent('ternobo:loaded', {
@@ -661,8 +670,9 @@ var TernoboWire = /*#__PURE__*/function () {
     }
   }, {
     key: "createVisitId",
-    value: function createVisitId() {
+    value: function createVisitId(data) {
       this.visitId = {
+        data: data,
         visitId: "wire"
       };
       return this.visitId;
@@ -737,7 +747,7 @@ function store() {
         state.user = payload;
       },
       setupApp: function setupApp(state, payload) {
-        state.ternoboWireApp = new TernoboWire(payload.app, payload.data);
+        state.ternoboWireApp = new TernoboWire(payload.app, payload.component, payload.data);
       },
       updateShared: function updateShared(state, payload) {
         state.shared = payload;
