@@ -291,7 +291,7 @@ var __vue_component__ = /*#__PURE__*/normalizeComponent({
 var script$1 = {
   methods: {
     emitBeforeRouteLeave: function emitBeforeRouteLeave(to, from, next) {
-      this.$refs["pageInstance"].$options.beforeRouteLeave(to, from, next);
+      this.$refs["pageInstance"].$options.beforeRouteLeave(to, from, next, this.$refs["pageInstance"]);
     },
     emitbeforeRouteEnter: function emitbeforeRouteEnter(to, from) {
       var _this = this;
@@ -417,7 +417,7 @@ var __vue_inject_styles__$1 = undefined;
 var __vue_scope_id__$1 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$1 = "data-v-4ab7aad2";
+var __vue_module_identifier__$1 = "data-v-095b7d00";
 /* functional template */
 
 var __vue_is_functional_template__$1 = false;

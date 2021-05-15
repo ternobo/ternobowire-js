@@ -268,7 +268,7 @@ const __vue_component__ = /*#__PURE__*/normalizeComponent({
 var script$1 = {
   methods: {
     emitBeforeRouteLeave(to, from, next) {
-      this.$refs["pageInstance"].$options.beforeRouteLeave(to, from, next);
+      this.$refs["pageInstance"].$options.beforeRouteLeave(to, from, next, this.$refs["pageInstance"]);
     },
 
     emitbeforeRouteEnter(to, from) {
@@ -406,7 +406,7 @@ const __vue_component__$1 = /*#__PURE__*/normalizeComponent({
 }, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
 
 var router = {
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to, from, next, vm = {}) {
     next();
   },
 

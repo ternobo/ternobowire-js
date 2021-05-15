@@ -11,7 +11,7 @@ import AppLayout from "@/Layouts/AppLayout";
 export default {
 	methods: {
 		emitBeforeRouteLeave(to, from, next) {
-			this.$refs["pageInstance"].$options.beforeRouteLeave(to, from, next);
+			this.$refs["pageInstance"].$options.beforeRouteLeave(to, from, next, this.$refs["pageInstance"]);
 		},
 		emitbeforeRouteEnter(to, from) {
 			let next = () => {
