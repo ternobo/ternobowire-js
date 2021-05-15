@@ -1,7 +1,7 @@
 <template>
 	<component :is="layout" :loading="loading">
 		<transition name="fade" mode="out-in">
-			<component v-if="ready" :is="componentInstance" v-bind="propsToBind"></component>
+			<component v-if="ready" ref="pageInstance" :is="componentInstance" v-bind="propsToBind"></component>
 		</transition>
 	</component>
 </template>
@@ -10,9 +10,25 @@
 import AppLayout from "@/Layouts/AppLayout";
 export default {
 	methods: {
+		emitBeforeRouteLeave(to, from, next) {
+			this.$refs["pageInstance"].$options.beforeRouteLeave(to, from, next);
+		},
+		emitbeforeRouteEnter(to, from) {
+			let next = () => {
+				this.updateComponent();
+			};
+			this.componentInstance.beforeRouteEnter(to, from, next);
+		},
+		destroyPage() {
+			if (this.componentInstance) {
+				this.componentInstance.$destroy();
+			}
+		},
 		updateComponent() {
 			this.resolveComponent(this.component).then((value) => {
-				this.componentInstance = value.default;
+				this.destroyPage();
+				let page = value.default;
+				this.componentInstance = page;
 				if (this.componentInstance.layout != null) {
 					this.layout = this.componentInstance.layout;
 				}

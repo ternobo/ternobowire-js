@@ -290,33 +290,53 @@ var __vue_component__ = /*#__PURE__*/normalizeComponent({
 }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, createInjectorSSR, undefined);//
 var script$1 = {
   methods: {
-    updateComponent: function updateComponent() {
+    emitBeforeRouteLeave: function emitBeforeRouteLeave(to, from, next) {
+      this.$refs["pageInstance"].$options.beforeRouteLeave(to, from, next);
+    },
+    emitbeforeRouteEnter: function emitbeforeRouteEnter(to, from) {
       var _this = this;
 
-      this.resolveComponent(this.component).then(function (value) {
-        _this.componentInstance = value.default;
+      var next = function next() {
+        _this.updateComponent();
+      };
 
-        if (_this.componentInstance.layout != null) {
-          _this.layout = _this.componentInstance.layout;
+      this.componentInstance.beforeRouteEnter(to, from, next);
+    },
+    destroyPage: function destroyPage() {
+      if (this.componentInstance) {
+        this.componentInstance.$destroy();
+      }
+    },
+    updateComponent: function updateComponent() {
+      var _this2 = this;
+
+      this.resolveComponent(this.component).then(function (value) {
+        _this2.destroyPage();
+
+        var page = value.default;
+        _this2.componentInstance = page;
+
+        if (_this2.componentInstance.layout != null) {
+          _this2.layout = _this2.componentInstance.layout;
         }
 
-        if (_this.componentInstance.props) {
-          _this.propsToBind = {};
+        if (_this2.componentInstance.props) {
+          _this2.propsToBind = {};
 
-          if (Array.isArray(_this.componentInstance.props)) {
-            _this.componentInstance.props.forEach(function (item) {
-              _this.propsToBind[item] = _this.data[item];
+          if (Array.isArray(_this2.componentInstance.props)) {
+            _this2.componentInstance.props.forEach(function (item) {
+              _this2.propsToBind[item] = _this2.data[item];
             });
           } else {
-            Object.keys(_this.componentInstance.props).forEach(function (item) {
-              _this.propsToBind[item] = _this.data[item];
+            Object.keys(_this2.componentInstance.props).forEach(function (item) {
+              _this2.propsToBind[item] = _this2.data[item];
             });
           }
         }
 
-        _this.$forceUpdate();
+        _this2.$forceUpdate();
 
-        _this.ready = true;
+        _this2.ready = true;
       });
     }
   },
@@ -332,27 +352,27 @@ var script$1 = {
     };
   },
   created: function created() {
-    var _this2 = this;
+    var _this3 = this;
 
     axios.post("/ternobo-wire/get-data/" + this.dataToken).then(function (response) {
       var data = response.data;
-      _this2.data = data.data;
-      _this2.component = data.component;
+      _this3.data = data.data;
+      _this3.component = data.component;
 
-      _this2.$store.commit("updateShared", data.shared);
+      _this3.$store.commit("updateShared", data.shared);
 
-      _this2.$nextTick(function () {
-        _this2.updateComponent();
+      _this3.$nextTick(function () {
+        _this3.updateComponent();
       });
 
-      _this2.loading = false;
+      _this3.loading = false;
 
-      _this2.$store.dispatch("loadUser");
+      _this3.$store.dispatch("loadUser");
 
-      _this2.$store.commit("setupApp", {
-        data: _this2.data,
-        component: _this2.component,
-        app: _this2
+      _this3.$store.commit("setupApp", {
+        data: _this3.data,
+        component: _this3.component,
+        app: _this3
       });
     });
   },
@@ -379,6 +399,7 @@ var __vue_render__$1 = function __vue_render__() {
       "mode": "out-in"
     }
   }, [_vm.ready ? _c(_vm.componentInstance, _vm._b({
+    ref: "pageInstance",
     tag: "component"
   }, 'component', _vm.propsToBind, false)) : _vm._e()], 1)], 1);
 };
@@ -392,7 +413,7 @@ var __vue_inject_styles__$1 = undefined;
 var __vue_scope_id__$1 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$1 = "data-v-4971da4a";
+var __vue_module_identifier__$1 = "data-v-4b5c1a32";
 /* functional template */
 
 var __vue_is_functional_template__$1 = false;
@@ -405,7 +426,14 @@ var __vue_is_functional_template__$1 = false;
 var __vue_component__$1 = /*#__PURE__*/normalizeComponent({
   render: __vue_render__$1,
   staticRenderFns: __vue_staticRenderFns__$1
-}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);/**
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);var router = {
+  beforeRouteEnter: function beforeRouteEnter(to, from, next) {
+    next();
+  },
+  beforeRouteLeave: function beforeRouteLeave(to, from, next) {
+    next();
+  }
+};/**
  * Check if URL is from Same Origin.
  * @param {string} url 
  */
@@ -459,7 +487,7 @@ var TernoboWire = /*#__PURE__*/function () {
         window.scrollTo(0, 0);
         window.history.replaceState(event.state, "", window.location.href);
 
-        _this.loadComponent(state.data.component, state.data.data);
+        _this.loadComponent(window.location.pathname, event.target.location.pathname, state.data.component, state.data.data);
       }
     });
   }
@@ -570,7 +598,7 @@ var TernoboWire = /*#__PURE__*/function () {
         if (response.headers['x-ternobowire']) {
           _this3.app.$store.commit("updateShared", response.data.shared);
 
-          _this3.loadComponent(response.data.component, response.data.data);
+          _this3.loadComponent(window.location.pathname, window.location.pathname, response.data.component, response.data.data);
 
           var onLoaded = new CustomEvent('ternobo:loaded', {
             detail: {
@@ -633,7 +661,7 @@ var TernoboWire = /*#__PURE__*/function () {
         if (response.headers['x-ternobowire']) {
           _this4.app.$store.commit("updateShared", response.data.shared);
 
-          _this4.loadComponent(response.data.component, response.data.data);
+          _this4.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
 
           if (pushState) {
             window.history.pushState(_this4.createVisitId(response.data), "", location);
@@ -663,10 +691,10 @@ var TernoboWire = /*#__PURE__*/function () {
     }
   }, {
     key: "loadComponent",
-    value: function loadComponent(component, data) {
+    value: function loadComponent(from, to, component, data) {
       this.app.component = component;
       this.app.data = data;
-      this.app.updateComponent();
+      this.app.emitbeforeRouteEnter(to, from);
     }
   }, {
     key: "createVisitId",
@@ -684,6 +712,7 @@ var TernoboWire = /*#__PURE__*/function () {
 var plugin = {
   install: function install(Vue) {
     Vue.use(Vuex__default['default']);
+    Vue.mixin(router);
     Vue.component("wire-link", WireLink);
     Vue.directive("t-infinite-scroll", {
       bind: function bind(el, binding, vnode) {

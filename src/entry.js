@@ -1,6 +1,7 @@
 import WireLink from "./Components/WireLink";
 import Vuex from 'vuex';
 import WireApp from "./WireApp.vue";
+import router from "./mixins/router";
 
 /**
  * Check if URL is from Same Origin.
@@ -46,9 +47,9 @@ export class TernoboWire {
       if (state.visitId == "wire") {
         window.scrollTo(0, 0);
         window.history.replaceState(event.state, "", window.location.href);
-        this.loadComponent(state.data.component, state.data.data);
+        this.loadComponent(window.location.pathname, event.target.location.pathname, state.data.component, state.data.data);
       }
-    })
+    });
   }
 
 
@@ -121,7 +122,7 @@ export class TernoboWire {
     }).then((response) => {
       if (response.headers['x-ternobowire']) {
         this.app.$store.commit("updateShared", response.data.shared);
-        this.loadComponent(response.data.component, response.data.data);
+        this.loadComponent(window.location.pathname, window.location.pathname, response.data.component, response.data.data);
         const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });
         window.document.dispatchEvent(onLoaded);
       } else {
@@ -161,7 +162,7 @@ export class TernoboWire {
     }).then((response) => {
       if (response.headers['x-ternobowire']) {
         this.app.$store.commit("updateShared", response.data.shared);
-        this.loadComponent(response.data.component, response.data.data);
+        this.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
         if (pushState) {
           window.history.pushState(this.createVisitId(response.data), "", location);
         }
@@ -180,10 +181,10 @@ export class TernoboWire {
     });
   }
 
-  loadComponent(component, data) {
+  loadComponent(from, to, component, data) {
     this.app.component = component;
     this.app.data = data;
-    this.app.updateComponent();
+    this.app.emitbeforeRouteEnter(to, from);
   }
 
   createVisitId(data) {
@@ -194,6 +195,7 @@ export class TernoboWire {
 export const plugin = {
   install(Vue) {
     Vue.use(Vuex);
+    Vue.mixin(router);
     Vue.component("wire-link", WireLink);
     Vue.directive("t-infinite-scroll", {
       bind(el, binding, vnode) {

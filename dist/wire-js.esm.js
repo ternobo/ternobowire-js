@@ -267,9 +267,29 @@ const __vue_component__ = /*#__PURE__*/normalizeComponent({
 //
 var script$1 = {
   methods: {
+    emitBeforeRouteLeave(to, from, next) {
+      this.$refs["pageInstance"].$options.beforeRouteLeave(to, from, next);
+    },
+
+    emitbeforeRouteEnter(to, from) {
+      let next = () => {
+        this.updateComponent();
+      };
+
+      this.componentInstance.beforeRouteEnter(to, from, next);
+    },
+
+    destroyPage() {
+      if (this.componentInstance) {
+        this.componentInstance.$destroy();
+      }
+    },
+
     updateComponent() {
       this.resolveComponent(this.component).then(value => {
-        this.componentInstance = value.default;
+        this.destroyPage();
+        let page = value.default;
+        this.componentInstance = page;
 
         if (this.componentInstance.layout != null) {
           this.layout = this.componentInstance.layout;
@@ -352,6 +372,7 @@ var __vue_render__$1 = function () {
       "mode": "out-in"
     }
   }, [_vm.ready ? _c(_vm.componentInstance, _vm._b({
+    ref: "pageInstance",
     tag: "component"
   }, 'component', _vm.propsToBind, false)) : _vm._e()], 1)], 1);
 };
@@ -379,6 +400,17 @@ const __vue_component__$1 = /*#__PURE__*/normalizeComponent({
   render: __vue_render__$1,
   staticRenderFns: __vue_staticRenderFns__$1
 }, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
+
+var router = {
+  beforeRouteEnter(to, from, next) {
+    next();
+  },
+
+  beforeRouteLeave(to, from, next) {
+    next();
+  }
+
+};
 
 /**
  * Check if URL is from Same Origin.
@@ -425,7 +457,7 @@ class TernoboWire {
       if (state.visitId == "wire") {
         window.scrollTo(0, 0);
         window.history.replaceState(event.state, "", window.location.href);
-        this.loadComponent(state.data.component, state.data.data);
+        this.loadComponent(window.location.pathname, event.target.location.pathname, state.data.component, state.data.data);
       }
     });
   }
@@ -523,7 +555,7 @@ class TernoboWire {
     }).then(response => {
       if (response.headers['x-ternobowire']) {
         this.app.$store.commit("updateShared", response.data.shared);
-        this.loadComponent(response.data.component, response.data.data);
+        this.loadComponent(window.location.pathname, window.location.pathname, response.data.component, response.data.data);
         const onLoaded = new CustomEvent('ternobo:loaded', {
           detail: {
             location: location
@@ -577,7 +609,7 @@ class TernoboWire {
     }).then(response => {
       if (response.headers['x-ternobowire']) {
         this.app.$store.commit("updateShared", response.data.shared);
-        this.loadComponent(response.data.component, response.data.data);
+        this.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
 
         if (pushState) {
           window.history.pushState(this.createVisitId(response.data), "", location);
@@ -606,10 +638,10 @@ class TernoboWire {
     });
   }
 
-  loadComponent(component, data) {
+  loadComponent(from, to, component, data) {
     this.app.component = component;
     this.app.data = data;
-    this.app.updateComponent();
+    this.app.emitbeforeRouteEnter(to, from);
   }
 
   createVisitId(data) {
@@ -624,6 +656,7 @@ class TernoboWire {
 const plugin = {
   install(Vue) {
     Vue.use(Vuex);
+    Vue.mixin(router);
     Vue.component("wire-link", WireLink);
     Vue.directive("t-infinite-scroll", {
       bind(el, binding, vnode) {
