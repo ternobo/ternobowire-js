@@ -300,7 +300,11 @@ var script$1 = {
         _this.updateComponent();
       };
 
-      this.componentInstance.beforeRouteEnter(to, from, next);
+      if (this.componentInstance.beforeRouteEnter) {
+        this.componentInstance.beforeRouteEnter(to, from, next);
+      } else {
+        next();
+      }
     },
     destroyPage: function destroyPage() {
       if (this.componentInstance) {
@@ -413,7 +417,7 @@ var __vue_inject_styles__$1 = undefined;
 var __vue_scope_id__$1 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$1 = "data-v-4b5c1a32";
+var __vue_module_identifier__$1 = "data-v-6c644afc";
 /* functional template */
 
 var __vue_is_functional_template__$1 = false;
@@ -639,6 +643,7 @@ var TernoboWire = /*#__PURE__*/function () {
       var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'get';
       var pushState = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+      this.app.emitBeforeRouteLeave();
 
       if (!testSameOrigin(location)) {
         window.open(location);

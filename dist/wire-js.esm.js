@@ -276,7 +276,11 @@ var script$1 = {
         this.updateComponent();
       };
 
-      this.componentInstance.beforeRouteEnter(to, from, next);
+      if (this.componentInstance.beforeRouteEnter) {
+        this.componentInstance.beforeRouteEnter(to, from, next);
+      } else {
+        next();
+      }
     },
 
     destroyPage() {
@@ -589,6 +593,8 @@ class TernoboWire {
 
 
   visit(location, data = {}, type = 'get', pushState = true) {
+    this.app.emitBeforeRouteLeave();
+
     if (!testSameOrigin(location)) {
       window.open(location);
     }
