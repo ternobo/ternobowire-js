@@ -307,8 +307,8 @@ var script$1 = {
       }
     },
     destroyPage: function destroyPage() {
-      if (this.componentInstance) {
-        this.componentInstance.$destroy();
+      if (this.$refs["pageInstance"]) {
+        this.$refs["pageInstance"].$destroy();
       }
     },
     updateComponent: function updateComponent() {
@@ -417,7 +417,7 @@ var __vue_inject_styles__$1 = undefined;
 var __vue_scope_id__$1 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$1 = "data-v-6c644afc";
+var __vue_module_identifier__$1 = "data-v-4ab7aad2";
 /* functional template */
 
 var __vue_is_functional_template__$1 = false;

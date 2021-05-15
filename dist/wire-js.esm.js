@@ -284,8 +284,8 @@ var script$1 = {
     },
 
     destroyPage() {
-      if (this.componentInstance) {
-        this.componentInstance.$destroy();
+      if (this.$refs["pageInstance"]) {
+        this.$refs["pageInstance"].$destroy();
       }
     },
 
