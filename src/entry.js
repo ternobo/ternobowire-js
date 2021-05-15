@@ -147,6 +147,7 @@ export class TernoboWire {
    * @param {boolean} pushState - if true, push history state
    */
   visit(location, data = {}, type = 'get', pushState = true) {
+    this.app.emitBeforeRouteLeave();
     if (!testSameOrigin(location)) {
       window.open(location);
     }
