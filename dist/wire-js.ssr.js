@@ -643,55 +643,55 @@ var TernoboWire = /*#__PURE__*/function () {
       var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var type = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'get';
       var pushState = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
-      this.app.emitBeforeRouteLeave();
-
-      if (!testSameOrigin(location)) {
-        window.open(location);
-      }
-
-      var onStart = new CustomEvent('ternobo:navigate', {
-        detail: {
-          location: location
+      this.app.emitBeforeRouteLeave(window.location.pathname, location, function () {
+        if (!testSameOrigin(location)) {
+          window.open(location);
         }
-      });
-      window.document.dispatchEvent(onStart);
-      axios({
-        method: type,
-        data: data,
-        url: location,
-        headers: {
-          "X-TernoboWire": true
-        }
-      }).then(function (response) {
-        if (response.headers['x-ternobowire']) {
-          _this4.app.$store.commit("updateShared", response.data.shared);
 
-          _this4.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
-
-          if (pushState) {
-            window.history.pushState(_this4.createVisitId(response.data), "", location);
-          }
-
-          var onLoaded = new CustomEvent('ternobo:loaded', {
-            detail: {
-              location: location
-            }
-          });
-          window.document.dispatchEvent(onLoaded);
-        } else {
-          window.location = location;
-        }
-      }).catch(function (err) {
-        if (!TernoboWire.production) {
-          console.log(err);
-        }
-      }).then(function () {
-        var onFinish = new CustomEvent('ternobo:finish', {
+        var onStart = new CustomEvent('ternobo:navigate', {
           detail: {
             location: location
           }
         });
-        window.document.dispatchEvent(onFinish);
+        window.document.dispatchEvent(onStart);
+        axios({
+          method: type,
+          data: data,
+          url: location,
+          headers: {
+            "X-TernoboWire": true
+          }
+        }).then(function (response) {
+          if (response.headers['x-ternobowire']) {
+            _this4.app.$store.commit("updateShared", response.data.shared);
+
+            _this4.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
+
+            if (pushState) {
+              window.history.pushState(_this4.createVisitId(response.data), "", location);
+            }
+
+            var onLoaded = new CustomEvent('ternobo:loaded', {
+              detail: {
+                location: location
+              }
+            });
+            window.document.dispatchEvent(onLoaded);
+          } else {
+            window.location = location;
+          }
+        }).catch(function (err) {
+          if (!TernoboWire.production) {
+            console.log(err);
+          }
+        }).then(function () {
+          var onFinish = new CustomEvent('ternobo:finish', {
+            detail: {
+              location: location
+            }
+          });
+          window.document.dispatchEvent(onFinish);
+        });
       });
     }
   }, {

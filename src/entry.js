@@ -147,38 +147,39 @@ export class TernoboWire {
    * @param {boolean} pushState - if true, push history state
    */
   visit(location, data = {}, type = 'get', pushState = true) {
-    this.app.emitBeforeRouteLeave();
-    if (!testSameOrigin(location)) {
-      window.open(location);
-    }
-    let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });
-    window.document.dispatchEvent(onStart);
-    axios({
-      method: type,
-      data: data,
-      url: location,
-      headers: {
-        "X-TernoboWire": true
+    this.app.emitBeforeRouteLeave(window.location.pathname, location, () => {
+      if (!testSameOrigin(location)) {
+        window.open(location);
       }
-    }).then((response) => {
-      if (response.headers['x-ternobowire']) {
-        this.app.$store.commit("updateShared", response.data.shared);
-        this.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
-        if (pushState) {
-          window.history.pushState(this.createVisitId(response.data), "", location);
+      let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });
+      window.document.dispatchEvent(onStart);
+      axios({
+        method: type,
+        data: data,
+        url: location,
+        headers: {
+          "X-TernoboWire": true
         }
-        const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });
-        window.document.dispatchEvent(onLoaded);
-      } else {
-        window.location = location;
-      }
-    }).catch((err) => {
-      if (!TernoboWire.production) {
-        console.log(err);
-      }
-    }).then(() => {
-      const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });
-      window.document.dispatchEvent(onFinish);
+      }).then((response) => {
+        if (response.headers['x-ternobowire']) {
+          this.app.$store.commit("updateShared", response.data.shared);
+          this.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
+          if (pushState) {
+            window.history.pushState(this.createVisitId(response.data), "", location);
+          }
+          const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });
+          window.document.dispatchEvent(onLoaded);
+        } else {
+          window.location = location;
+        }
+      }).catch((err) => {
+        if (!TernoboWire.production) {
+          console.log(err);
+        }
+      }).then(() => {
+        const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });
+        window.document.dispatchEvent(onFinish);
+      });
     });
   }
 
