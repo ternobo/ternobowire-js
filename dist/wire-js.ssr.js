@@ -668,6 +668,7 @@ var TernoboWire = /*#__PURE__*/function () {
             _this4.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
 
             if (pushState) {
+              window.scrollTo(0, 0);
               window.history.pushState(_this4.createVisitId(response.data), "", location);
             }
 

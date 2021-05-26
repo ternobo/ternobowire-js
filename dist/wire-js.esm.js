@@ -617,6 +617,7 @@ class TernoboWire {
           this.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
 
           if (pushState) {
+            window.scrollTo(0, 0);
             window.history.pushState(this.createVisitId(response.data), "", location);
           }
 

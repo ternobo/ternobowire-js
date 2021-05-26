@@ -165,6 +165,7 @@ export class TernoboWire {
           this.app.$store.commit("updateShared", response.data.shared);
           this.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
           if (pushState) {
+            window.scrollTo(0, 0);
             window.history.pushState(this.createVisitId(response.data), "", location);
           }
           const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });
