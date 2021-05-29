@@ -4,7 +4,7 @@ import {
   plugin,
 } from '@/entry';
 
-import TernoboApp from '@/WireApp.vue';
+import TernoboApp from '@/Layouts/AppLayout.vue';
 import axios from "axios";
 
 Vue.config.productionTip = false;
@@ -13,9 +13,6 @@ Vue.use(plugin);
 
 let vuexStore = store();
 
-let component = window.location.pathname.replace("/", "");
-let data = {};
-
 window.axios = axios;
 
 new Vue({
@@ -23,9 +20,7 @@ new Vue({
   render: (h) =>
     h(TernoboApp, {
       props: {
-        initialData: data,
-        initialComponent: component,
-        resolveComponent: (component) => import(`./Pages/${component}`),
+        loading: true
       },
     })
 }).$mount("#app");
