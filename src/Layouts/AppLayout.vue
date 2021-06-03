@@ -61,6 +61,7 @@ export default {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	margin-bottom: 120px;
 }
 .spinner {
 	width: 212px;
@@ -68,13 +69,13 @@ export default {
 	direction: ltr;
 	background: white;
 	margin-top: 40px;
-	box-shadow: 0 6px 20px rgb(0 0 0 / 20%);
+	box-shadow: 0 6px 20px rgb(0 0 0 / 10%);
 	overflow: hidden;
+	border-radius: 2px;
 	.spinner-icon {
 		background: #191919;
 		height: 100%;
 		transition: 0.7s all;
-		border-radius: 5px;
 		width: 80px;
 		animation-name: spinner-indicating;
 		animation-duration: 2s;
