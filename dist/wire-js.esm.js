@@ -259,12 +259,12 @@ var __vue_staticRenderFns__ = [function () {
 
 const __vue_inject_styles__ = function (inject) {
   if (!inject) return;
-  inject("data-v-6e83ba00_0", {
+  inject("data-v-63280e30_0", {
     source: "@-webkit-keyframes spinner-indicating{0%{transform:translateX(0);width:80px}50%{transform:translateX(190px);width:0}to{transform:translateX(0)}}@keyframes spinner-indicating{0%{transform:translateX(0);width:80px}50%{transform:translateX(190px)}100%{transform:translateX(-40px)}}",
     map: undefined,
     media: undefined
-  }), inject("data-v-6e83ba00_1", {
-    source: ".ternobo-loading[data-v-6e83ba00]{display:flex;height:100vh;width:100vw;justify-content:center;align-items:center}.loading-container[data-v-6e83ba00]{display:flex;flex-direction:column;justify-content:center;align-items:center;margin-bottom:120px}.spinner[data-v-6e83ba00]{width:212px;height:5px;direction:ltr;background:#fff;margin-top:40px;box-shadow:0 6px 20px rgba(0,0,0,.1);overflow:hidden;border-radius:2px}.spinner .spinner-icon[data-v-6e83ba00]{background:#191919;height:100%;transition:.7s all;width:80px;animation-name:spinner-indicating;animation-duration:2s;animation-timing-function:cubic-bezier(0,0,.2,1);animation-iteration-count:infinite}",
+  }), inject("data-v-63280e30_1", {
+    source: ".ternobo-loading[data-v-63280e30]{display:flex;height:100vh;width:100vw;justify-content:center;align-items:center}.loading-container[data-v-63280e30]{display:flex;flex-direction:column;justify-content:center;align-items:center;margin-bottom:120px}.spinner[data-v-63280e30]{width:212px;height:5px;direction:ltr;background:#fff;margin-top:40px;box-shadow:0 6px 20px rgba(0,0,0,.1);overflow:hidden;border-radius:2px}.spinner .spinner-icon[data-v-63280e30]{background:#191919;height:100%;border-radius:2px;transition:.7s all;width:80px;animation-name:spinner-indicating;animation-duration:2s;animation-timing-function:cubic-bezier(0,0,.2,1);animation-iteration-count:infinite}",
     map: undefined,
     media: undefined
   });
@@ -272,7 +272,7 @@ const __vue_inject_styles__ = function (inject) {
 /* scoped */
 
 
-const __vue_scope_id__ = "data-v-6e83ba00";
+const __vue_scope_id__ = "data-v-63280e30";
 /* module identifier */
 
 const __vue_module_identifier__ = undefined;

@@ -75,6 +75,7 @@ export default {
 	.spinner-icon {
 		background: #191919;
 		height: 100%;
+		border-radius: 2px;
 		transition: 0.7s all;
 		width: 80px;
 		animation-name: spinner-indicating;
