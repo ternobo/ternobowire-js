@@ -1,21 +1,14 @@
-import WireLink from "./Components/WireLink";
-import Vuex from 'vuex';
 import WireApp from "./WireApp.vue";
-import router from "./mixins/router";
-
-/**
- * Check if URL is from Same Origin.
- * @param {string} url 
- */
-function testSameOrigin(url) {
-  var loc = window.location,
-    a = document.createElement('a');
-  a.href = url;
-  return a.hostname == loc.hostname &&
-    a.port == loc.port &&
-    a.protocol == loc.protocol;
-}
-
+import { testSameOrigin } from "./utilities";
+import plugin from './plugin';
+import store from "./store";
+import {
+  fireNavigate,
+  fireNavigationFinish,
+  firePageLoad
+} from "./events"
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 /**
  * TernoboWire Base Class
  */
@@ -38,21 +31,48 @@ export class TernoboWire {
   constructor(application, component, data) {
     this.app = application;
     this.data = data;
-    window.history.replaceState(this.createVisitId({
+    this.page = {
       component: component,
       data: data
-    }), "", window.location.href);
+    };
+
+    window.history.replaceState(this.createVisitId(this.page), "", window.location.href);
+
+    this.handleInitialPageVisit();
+    this.handlePopstate();
+  }
+
+  handlePopstate() {
     window.addEventListener('popstate', (event) => {
       let state = event.state;
-      if (state.visitId == "wire") {
-        window.scrollTo(0, 0);
-        window.history.replaceState(event.state, "", window.location.href);
-        this.loadComponent(window.location.pathname, event.target.location.pathname, state.data.component, state.data.data);
-      }
+      setTimeout(() => {
+        if (state.visitId == "wire") {
+          window.scrollTo(0, 0);
+          this.loadComponent(window.location.pathname, event.target.location.pathname, state.data.component, state.data.data)
+        }
+      }, 0);
     });
   }
 
+  handleInitialPageVisit() {
+    if (this.isBackForwardVisit()) {
+      this.handleBackForwardVisit(this.page)
+    } else {
+      this.loadComponent(null, window.location.pathname, this.page.component, this.page.data);
+    }
+  }
 
+  isBackForwardVisit() {
+    return window.history.state
+      && window.performance
+      && window.performance.getEntriesByType('navigation').length > 0
+      && (window.performance.getEntriesByType('navigation')[0]).type === 'back_forward'
+  }
+
+
+  handleBackForwardVisit(page) {
+    this.loadComponent(null, window.location.pathname, page.component, page.data);
+  }
 
   /**
    * Get page data without reredndering Page component 
@@ -64,26 +84,26 @@ export class TernoboWire {
    */
   getData(location, navigateLoading = true, pushState = false, data = {}, type = 'get') {
     return new Promise((resolve, reject) => {
-      let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });
       if (navigateLoading) {
-        window.document.dispatchEvent(onStart);
+        fireNavigate(location);
       }
       axios({
         method: type,
         data: data,
         url: location,
         headers: {
-          "X-TernoboWire": true
+          "X-TernoboWire": true,
+          Accept: 'text/html, application/xhtml+xml',
+          'X-Requested-With': 'XMLHttpRequest',
         }
       }).then((response) => {
         resolve(response.data.data);
         if (response.headers['x-ternobowire']) {
           if (pushState) {
-            window.history.pushState(this.createVisitId(response.data), "", location);
+            this.pushState(location, response.data);
           }
-          const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });
           if (navigateLoading) {
-            window.document.dispatchEvent(onLoaded);
+            firePageLoad(location);
           }
         }
       }).catch((err) => {
@@ -93,8 +113,7 @@ export class TernoboWire {
         reject(err);
       }).then(() => {
         if (navigateLoading) {
-          const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });
-          window.document.dispatchEvent(onFinish);
+          fireNavigationFinish(location);
         }
         resolve();
       });
@@ -107,8 +126,7 @@ export class TernoboWire {
    */
   reload(options = {}) {
     let location = window.location.href;
-    let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });
-    window.document.dispatchEvent(onStart);
+    fireNavigate(location);
     axios({
       method: "GET",
       data: {
@@ -123,8 +141,7 @@ export class TernoboWire {
       if (response.headers['x-ternobowire']) {
         this.app.$store.commit("updateShared", response.data.shared);
         this.loadComponent(window.location.pathname, window.location.pathname, response.data.component, response.data.data);
-        const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });
-        window.document.dispatchEvent(onLoaded);
+        firePageLoad(location);
       } else {
         window.location.reload();
       }
@@ -133,8 +150,7 @@ export class TernoboWire {
         console.log(err);
       }
     }).then(() => {
-      const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });
-      window.document.dispatchEvent(onFinish);
+      fireNavigationFinish(location);
     });
   }
 
@@ -151,25 +167,25 @@ export class TernoboWire {
       if (!testSameOrigin(location)) {
         window.open(location);
       }
-      let onStart = new CustomEvent('ternobo:navigate', { detail: { location: location } });
-      window.document.dispatchEvent(onStart);
+      fireNavigate(location);
       axios({
         method: type,
         data: data,
         url: location,
         headers: {
-          "X-TernoboWire": true
+          "X-TernoboWire": true,
+          Accept: 'text/html, application/xhtml+xml',
+          'X-Requested-With': 'XMLHttpRequest',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
         }
       }).then((response) => {
         if (response.headers['x-ternobowire']) {
           this.app.$store.commit("updateShared", response.data.shared);
           this.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
           if (pushState) {
-            window.scrollTo(0, 0);
-            window.history.pushState(this.createVisitId(response.data), "", location);
+            this.pushState(location, response.data);
           }
-          const onLoaded = new CustomEvent('ternobo:loaded', { detail: { location: location } });
-          window.document.dispatchEvent(onLoaded);
+          firePageLoad(location);
         } else {
           window.location = location;
         }
@@ -178,16 +194,26 @@ export class TernoboWire {
           console.log(err);
         }
       }).then(() => {
-        const onFinish = new CustomEvent('ternobo:finish', { detail: { location: location } });
-        window.document.dispatchEvent(onFinish);
+        fireNavigationFinish(location);
       });
     });
+  }
+
+  pushState(url, data) {
+    window.scrollTo(0, 0);
+    this.page = data;
+    window.history.pushState(this.createVisitId(data), "", url);
+  }
+
+  replaceState(url, data) {
+    this.page = data;
+    window.history.replaceState(data, "", url)
   }
 
   loadComponent(from, to, component, data) {
     this.app.component = component;
     this.app.data = data;
-    this.app.emitbeforeRouteEnter(to, from);
+    return this.app.emitbeforeRouteEnter(to, from);
   }
 
   createVisitId(data) {
@@ -195,71 +221,10 @@ export class TernoboWire {
     return this.visitId
   }
 }
-export const plugin = {
-  install(Vue) {
-    Vue.use(Vuex);
-    Vue.mixin(router);
-    Vue.component("wire-link", WireLink);
-    Vue.directive("t-infinite-scroll", {
-      bind(el, binding, vnode) {
-        el.addEventListener("scroll", (e) => {
-          if (el.scrollTop + el.clientHeight >= el.scrollHeight) {
-            binding.value();
-          }
-        });
-      }
-    });
-    Vue.directive('click-outside', {
-      bind(el, binding, vnode) {
-        let event = event => vnode.context.$emit(binding.expression, event);
-        document.body.addEventListener('click', event)
-      }
-    });
-  }
-}
-
 
 export default WireApp;
 
-export function store(options = { state: {}, actions: {}, mutations: {} }) {
-  let storeOptions = {
-    ...options,
-    state: {
-      ...options.state,
-      user: {},
-      ternoboWireApp: null,
-      shared: {},
-    },
-    actions: {
-      ...options.actions,
-      loadUser(context) {
-        axios.post("/ternobo-wire/get-user").then((response) => {
-          context.commit("setUser", response.data.user);
-          const onUserLoad = new CustomEvent('ternobo:userloaded', { detail: { user: response.data.user } });
-          window.document.dispatchEvent(onUserLoad);
-        });
-      },
-      loadShared(context) {
-        axios.post("/ternobo-wire/get-shared").then((response) => {
-          context.commit("updateShared", response.data.shared);
-          const onSharedDataLoad = new CustomEvent('ternobo:sharedataloaded', { detail: { user: response.data.user } });
-          window.document.dispatchEvent(onSharedDataLoad);
-        });
-      }
-    },
-    mutations: {
-      ...options.mutations,
-      setUser(state, payload) {
-        state.user = payload;
-      },
-      setupApp(state, payload) {
-        state.ternoboWireApp = new TernoboWire(payload.app, payload.component, payload.data);
-      },
-      updateShared(state, payload) {
-        state.shared = payload
-      }
-    }
-  };
-
-  return new Vuex.Store(storeOptions);
+export {
+  plugin,
+  store
 };

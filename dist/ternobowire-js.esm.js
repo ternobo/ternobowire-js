@@ -1,56 +1,6 @@
 import Vuex from 'vuex';
-
-/**
- * Ternobo WireLink Component
- */
-var WireLink = {
-  name: "WireLink",
-  functional: true,
-  props: {
-    href: {
-      type: String,
-      required: true
-    },
-    method: {
-      type: String,
-      default: 'get'
-    },
-    replace: {
-      type: Boolean,
-      default: false
-    },
-    preserveScroll: {
-      type: Boolean,
-      default: false
-    },
-    as: {
-      type: String,
-      default: "a"
-    }
-  },
-
-  render(h, node) {
-    let props = node.props,
-        data = node.data,
-        children = node.children;
-    let requestData = props.data ? props.data : {};
-
-    const visit = event => {
-      event.preventDefault();
-      node.parent.$store.state.ternoboWireApp.visit(props.href, requestData, props.method);
-    };
-
-    return h(props.as, { ...data,
-      attrs: { ...data.attrs,
-        href: props.href
-      },
-      on: { ...(data.on || {}),
-        click: visit
-      }
-    }, children);
-  }
-
-};
+import axios$1 from 'axios';
+import 'uuid';
 
 //
 //
@@ -64,7 +14,7 @@ var WireLink = {
 //
 //
 //
-var script = {
+var script$1 = {
   name: "AppLayout",
   props: ["loading"]
 };
@@ -198,10 +148,10 @@ function addStyle(id, css) {
 }
 
 /* script */
-const __vue_script__ = script;
+const __vue_script__$1 = script$1;
 /* template */
 
-var __vue_render__ = function () {
+var __vue_render__$1 = function () {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -239,7 +189,7 @@ var __vue_render__ = function () {
   })]), _vm._v(" "), _vm._m(0)]) : _vm._t("default")], 2);
 };
 
-var __vue_staticRenderFns__ = [function () {
+var __vue_staticRenderFns__$1 = [function () {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -257,7 +207,7 @@ var __vue_staticRenderFns__ = [function () {
 }];
 /* style */
 
-const __vue_inject_styles__ = function (inject) {
+const __vue_inject_styles__$1 = function (inject) {
   if (!inject) return;
   inject("data-v-63280e30_0", {
     source: "@-webkit-keyframes spinner-indicating{0%{transform:translateX(0);width:80px}50%{transform:translateX(190px);width:0}to{transform:translateX(0)}}@keyframes spinner-indicating{0%{transform:translateX(0);width:80px}50%{transform:translateX(190px)}100%{transform:translateX(-40px)}}",
@@ -272,39 +222,44 @@ const __vue_inject_styles__ = function (inject) {
 /* scoped */
 
 
-const __vue_scope_id__ = "data-v-63280e30";
+const __vue_scope_id__$1 = "data-v-63280e30";
 /* module identifier */
 
-const __vue_module_identifier__ = undefined;
+const __vue_module_identifier__$1 = undefined;
 /* functional template */
 
-const __vue_is_functional_template__ = false;
+const __vue_is_functional_template__$1 = false;
 /* style inject SSR */
 
 /* style inject shadow dom */
 
-const __vue_component__ = /*#__PURE__*/normalizeComponent({
-  render: __vue_render__,
-  staticRenderFns: __vue_staticRenderFns__
-}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, createInjector, undefined, undefined);
+const __vue_component__$1 = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__$1,
+  staticRenderFns: __vue_staticRenderFns__$1
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, createInjector, undefined, undefined);
 
 //
-var script$1 = {
+var script = {
   methods: {
     emitBeforeRouteLeave(to, from, next) {
       this.$refs["pageInstance"].$options.beforeRouteLeave(to, from, next, this.$refs["pageInstance"]);
     },
 
     emitbeforeRouteEnter(to, from) {
-      let next = () => {
-        this.updateComponent();
-      };
+      return this.resolveComponent(this.component).then(value => {
+        this.destroyPage();
+        let page = value.default;
 
-      if (this.componentInstance.beforeRouteEnter) {
-        this.componentInstance.beforeRouteEnter(to, from, next);
-      } else {
-        next();
-      }
+        let next = () => {
+          this.loadPage(page);
+        };
+
+        if (page.beforeRouteEnter) {
+          this.componentInstance.beforeRouteEnter(to, from, next);
+        } else {
+          next();
+        }
+      });
     },
 
     destroyPage() {
@@ -313,33 +268,29 @@ var script$1 = {
       }
     },
 
-    updateComponent() {
-      this.resolveComponent(this.component).then(value => {
-        this.destroyPage();
-        let page = value.default;
-        this.componentInstance = page;
+    loadPage(page) {
+      this.componentInstance = page;
 
-        if (this.componentInstance.layout != null) {
-          this.layout = this.componentInstance.layout;
+      if (this.componentInstance.layout != null) {
+        this.layout = this.componentInstance.layout;
+      }
+
+      if (this.componentInstance.props) {
+        this.propsToBind = {};
+
+        if (Array.isArray(this.componentInstance.props)) {
+          this.componentInstance.props.forEach(item => {
+            this.propsToBind[item] = this.data[item];
+          });
+        } else {
+          Object.keys(this.componentInstance.props).forEach(item => {
+            this.propsToBind[item] = this.data[item];
+          });
         }
+      }
 
-        if (this.componentInstance.props) {
-          this.propsToBind = {};
-
-          if (Array.isArray(this.componentInstance.props)) {
-            this.componentInstance.props.forEach(item => {
-              this.propsToBind[item] = this.data[item];
-            });
-          } else {
-            Object.keys(this.componentInstance.props).forEach(item => {
-              this.propsToBind[item] = this.data[item];
-            });
-          }
-        }
-
-        this.$forceUpdate();
-        this.ready = true;
-      });
+      this.$forceUpdate();
+      this.ready = true;
     }
 
   },
@@ -350,7 +301,7 @@ var script$1 = {
       propsToBind: {},
       component: null,
       componentInstance: null,
-      layout: __vue_component__,
+      layout: __vue_component__$1,
       ready: false,
       data: {}
     };
@@ -362,9 +313,6 @@ var script$1 = {
       this.data = data.data;
       this.component = data.component;
       this.$store.commit("updateShared", data.shared);
-      this.$nextTick(() => {
-        this.updateComponent();
-      });
       this.loading = false;
       this.$store.dispatch("loadUser");
       this.$store.commit("setupApp", {
@@ -372,6 +320,8 @@ var script$1 = {
         component: this.component,
         app: this
       });
+    }).catch(() => {
+      window.location.reload();
     });
   },
 
@@ -379,10 +329,10 @@ var script$1 = {
 };
 
 /* script */
-const __vue_script__$1 = script$1;
+const __vue_script__ = script;
 /* template */
 
-var __vue_render__$1 = function () {
+var __vue_render__ = function () {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -405,29 +355,92 @@ var __vue_render__$1 = function () {
   }, 'component', _vm.propsToBind, false)) : _vm._e()], 1)], 1);
 };
 
-var __vue_staticRenderFns__$1 = [];
+var __vue_staticRenderFns__ = [];
 /* style */
 
-const __vue_inject_styles__$1 = undefined;
+const __vue_inject_styles__ = undefined;
 /* scoped */
 
-const __vue_scope_id__$1 = undefined;
+const __vue_scope_id__ = undefined;
 /* module identifier */
 
-const __vue_module_identifier__$1 = undefined;
+const __vue_module_identifier__ = undefined;
 /* functional template */
 
-const __vue_is_functional_template__$1 = false;
+const __vue_is_functional_template__ = false;
 /* style inject */
 
 /* style inject SSR */
 
 /* style inject shadow dom */
 
-const __vue_component__$1 = /*#__PURE__*/normalizeComponent({
-  render: __vue_render__$1,
-  staticRenderFns: __vue_staticRenderFns__$1
-}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, undefined, undefined, undefined);
+const __vue_component__ = /*#__PURE__*/normalizeComponent({
+  render: __vue_render__,
+  staticRenderFns: __vue_staticRenderFns__
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
+
+/**
+ * Check if URL is from Same Origin.
+ * @param {string} url 
+ */
+function testSameOrigin(url) {
+  var loc = window.location,
+      a = document.createElement('a');
+  a.href = url;
+  return a.hostname == loc.hostname && a.port == loc.port && a.protocol == loc.protocol;
+}
+
+/**
+ * Ternobo WireLink Component
+ */
+var WireLink = {
+  name: "WireLink",
+  functional: true,
+  props: {
+    href: {
+      type: String,
+      required: true
+    },
+    method: {
+      type: String,
+      default: 'get'
+    },
+    replace: {
+      type: Boolean,
+      default: false
+    },
+    preserveScroll: {
+      type: Boolean,
+      default: false
+    },
+    as: {
+      type: String,
+      default: "a"
+    }
+  },
+
+  render(h, node) {
+    let props = node.props,
+        data = node.data,
+        children = node.children;
+    let requestData = props.data ? props.data : {};
+
+    const visit = event => {
+      event.preventDefault();
+      node.parent.$store.state.ternoboWireApp.visit(props.href, requestData, props.method);
+    };
+
+    return h(props.as, { ...data,
+      attrs: { ...data.attrs,
+        href: props.href
+      },
+      on: { ...(data.on || {}),
+        click: visit
+      }
+    }, children);
+  }
+
+};
 
 var router = {
   beforeRouteEnter(to, from, next, vm = {}) {
@@ -440,251 +453,7 @@ var router = {
 
 };
 
-/**
- * Check if URL is from Same Origin.
- * @param {string} url 
- */
-
-function testSameOrigin(url) {
-  var loc = window.location,
-      a = document.createElement('a');
-  a.href = url;
-  return a.hostname == loc.hostname && a.port == loc.port && a.protocol == loc.protocol;
-}
-/**
- * TernoboWire Base Class
- */
-
-
-class TernoboWire {
-  /**
-   * 
-   * @param {Vue} vm Current Vue Instance
-   * @returns { TernoboWire }
-   */
-  static getInstance(vm) {
-    return vm.$store.state.ternoboWireApp;
-  }
-  /**
-   * setup TernoboWire Application. Automatic Setup on WireApp.vue
-   * @param {Vue} application - TernoboWire Application root
-   * @param {object} data - Initial Data.
-   */
-
-
-  constructor(application, component, data) {
-    this.app = application;
-    this.data = data;
-    window.history.replaceState(this.createVisitId({
-      component: component,
-      data: data
-    }), "", window.location.href);
-    window.addEventListener('popstate', event => {
-      let state = event.state;
-
-      if (state.visitId == "wire") {
-        window.scrollTo(0, 0);
-        window.history.replaceState(event.state, "", window.location.href);
-        this.loadComponent(window.location.pathname, event.target.location.pathname, state.data.component, state.data.data);
-      }
-    });
-  }
-  /**
-   * Get page data without reredndering Page component 
-   * @param {string} location - request url
-   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document
-   * @param {object} data - request body (object)
-   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
-   * @param {boolean} pushState - if true, push history state
-   */
-
-
-  getData(location, navigateLoading = true, pushState = false, data = {}, type = 'get') {
-    return new Promise((resolve, reject) => {
-      let onStart = new CustomEvent('ternobo:navigate', {
-        detail: {
-          location: location
-        }
-      });
-
-      if (navigateLoading) {
-        window.document.dispatchEvent(onStart);
-      }
-
-      axios({
-        method: type,
-        data: data,
-        url: location,
-        headers: {
-          "X-TernoboWire": true
-        }
-      }).then(response => {
-        resolve(response.data.data);
-
-        if (response.headers['x-ternobowire']) {
-          if (pushState) {
-            window.history.pushState(this.createVisitId(response.data), "", location);
-          }
-
-          const onLoaded = new CustomEvent('ternobo:loaded', {
-            detail: {
-              location: location
-            }
-          });
-
-          if (navigateLoading) {
-            window.document.dispatchEvent(onLoaded);
-          }
-        }
-      }).catch(err => {
-        if (!TernoboWire.production) {
-          console.log(err);
-        }
-
-        reject(err);
-      }).then(() => {
-        if (navigateLoading) {
-          const onFinish = new CustomEvent('ternobo:finish', {
-            detail: {
-              location: location
-            }
-          });
-          window.document.dispatchEvent(onFinish);
-        }
-
-        resolve();
-      });
-    });
-  }
-  /**
-   * Reload current page
-   * @param {object} options - reload options (Documented on TernoboWire-Laravel)
-   */
-
-
-  reload(options = {}) {
-    let location = window.location.href;
-    let onStart = new CustomEvent('ternobo:navigate', {
-      detail: {
-        location: location
-      }
-    });
-    window.document.dispatchEvent(onStart);
-    axios({
-      method: "GET",
-      data: {
-        options: options
-      },
-      url: location,
-      headers: {
-        "X-ReloadData": true,
-        "X-TernoboWire": true
-      }
-    }).then(response => {
-      if (response.headers['x-ternobowire']) {
-        this.app.$store.commit("updateShared", response.data.shared);
-        this.loadComponent(window.location.pathname, window.location.pathname, response.data.component, response.data.data);
-        const onLoaded = new CustomEvent('ternobo:loaded', {
-          detail: {
-            location: location
-          }
-        });
-        window.document.dispatchEvent(onLoaded);
-      } else {
-        window.location.reload();
-      }
-    }).catch(err => {
-      if (!TernoboWire.production) {
-        console.log(err);
-      }
-    }).then(() => {
-      const onFinish = new CustomEvent('ternobo:finish', {
-        detail: {
-          location: location
-        }
-      });
-      window.document.dispatchEvent(onFinish);
-    });
-  }
-  /**
-   * Visit URL 
-   * @param {string} location - request url
-   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document
-   * @param {object} data - request body (object)
-   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
-   * @param {boolean} pushState - if true, push history state
-   */
-
-
-  visit(location, data = {}, type = 'get', pushState = true) {
-    this.app.emitBeforeRouteLeave(window.location.pathname, location, () => {
-      if (!testSameOrigin(location)) {
-        window.open(location);
-      }
-
-      let onStart = new CustomEvent('ternobo:navigate', {
-        detail: {
-          location: location
-        }
-      });
-      window.document.dispatchEvent(onStart);
-      axios({
-        method: type,
-        data: data,
-        url: location,
-        headers: {
-          "X-TernoboWire": true
-        }
-      }).then(response => {
-        if (response.headers['x-ternobowire']) {
-          this.app.$store.commit("updateShared", response.data.shared);
-          this.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
-
-          if (pushState) {
-            window.scrollTo(0, 0);
-            window.history.pushState(this.createVisitId(response.data), "", location);
-          }
-
-          const onLoaded = new CustomEvent('ternobo:loaded', {
-            detail: {
-              location: location
-            }
-          });
-          window.document.dispatchEvent(onLoaded);
-        } else {
-          window.location = location;
-        }
-      }).catch(err => {
-        if (!TernoboWire.production) {
-          console.log(err);
-        }
-      }).then(() => {
-        const onFinish = new CustomEvent('ternobo:finish', {
-          detail: {
-            location: location
-          }
-        });
-        window.document.dispatchEvent(onFinish);
-      });
-    });
-  }
-
-  loadComponent(from, to, component, data) {
-    this.app.component = component;
-    this.app.data = data;
-    this.app.emitbeforeRouteEnter(to, from);
-  }
-
-  createVisitId(data) {
-    this.visitId = {
-      data: data,
-      visitId: "wire"
-    };
-    return this.visitId;
-  }
-
-}
-const plugin = {
+var plugin = {
   install(Vue) {
     Vue.use(Vuex);
     Vue.mixin(router);
@@ -699,18 +468,53 @@ const plugin = {
       }
 
     });
-    Vue.directive('click-outside', {
-      bind(el, binding, vnode) {
-        let event = event => vnode.context.$emit(binding.expression, event);
-
-        document.body.addEventListener('click', event);
-      }
-
-    });
   }
 
 };
-function store(options = {
+
+function fireNavigate(location) {
+  window.document.dispatchEvent(new CustomEvent('ternobo:navigate', {
+    detail: {
+      location: location
+    }
+  }));
+}
+
+function firePageLoad(location) {
+  window.document.dispatchEvent(new CustomEvent('ternobo:loaded', {
+    detail: {
+      location: location
+    }
+  }));
+}
+
+function fireNavigationFinish(location) {
+  window.document.dispatchEvent(new CustomEvent('ternobo:finish', {
+    detail: {
+      location: location
+    }
+  }));
+}
+
+function fireSharedataLoaded() {
+  const onSharedDataLoad = new CustomEvent('ternobo:sharedataloaded', {
+    detail: {
+      user: response.data.user
+    }
+  });
+  window.document.dispatchEvent(onSharedDataLoad);
+}
+
+function fireUserloaded(user) {
+  const onUserLoad = new CustomEvent('ternobo:userloaded', {
+    detail: {
+      user: user
+    }
+  });
+  window.document.dispatchEvent(onUserLoad);
+}
+
+function store (options = {
   state: {},
   actions: {},
   mutations: {}
@@ -724,26 +528,16 @@ function store(options = {
     actions: { ...options.actions,
 
       loadUser(context) {
-        axios.post("/ternobo-wire/get-user").then(response => {
+        axios$1.post("/ternobo-wire/get-user").then(response => {
           context.commit("setUser", response.data.user);
-          const onUserLoad = new CustomEvent('ternobo:userloaded', {
-            detail: {
-              user: response.data.user
-            }
-          });
-          window.document.dispatchEvent(onUserLoad);
+          fireUserloaded(response.data.user);
         });
       },
 
       loadShared(context) {
-        axios.post("/ternobo-wire/get-shared").then(response => {
+        axios$1.post("/ternobo-wire/get-shared").then(response => {
           context.commit("updateShared", response.data.shared);
-          const onSharedDataLoad = new CustomEvent('ternobo:sharedataloaded', {
-            detail: {
-              user: response.data.user
-            }
-          });
-          window.document.dispatchEvent(onSharedDataLoad);
+          fireSharedataLoaded(response.data.shared);
         });
       }
 
@@ -767,5 +561,228 @@ function store(options = {
   return new Vuex.Store(storeOptions);
 }
 
-export default __vue_component__$1;
+/**
+ * TernoboWire Base Class
+ */
+
+class TernoboWire {
+  /**
+   * 
+   * @param {Vue} vm Current Vue Instance
+   * @returns { TernoboWire }
+   */
+  static getInstance(vm) {
+    return vm.$store.state.ternoboWireApp;
+  }
+  /**
+   * setup TernoboWire Application. Automatic Setup on WireApp.vue
+   * @param {Vue} application - TernoboWire Application root
+   * @param {object} data - Initial Data.
+   */
+
+
+  constructor(application, component, data) {
+    this.app = application;
+    this.data = data;
+    this.page = {
+      component: component,
+      data: data
+    };
+    window.history.replaceState(this.createVisitId(this.page), "", window.location.href);
+    this.handleInitialPageVisit();
+    this.handlePopstate();
+  }
+
+  handlePopstate() {
+    window.addEventListener('popstate', event => {
+      let state = event.state;
+      setTimeout(() => {
+        if (state.visitId == "wire") {
+          window.scrollTo(0, 0);
+          this.loadComponent(window.location.pathname, event.target.location.pathname, state.data.component, state.data.data);
+        }
+      }, 0);
+    });
+  }
+
+  handleInitialPageVisit() {
+    if (this.isBackForwardVisit()) {
+      this.handleBackForwardVisit(this.page);
+    } else {
+      this.loadComponent(null, window.location.pathname, this.page.component, this.page.data);
+    }
+  }
+
+  isBackForwardVisit() {
+    return window.history.state && window.performance && window.performance.getEntriesByType('navigation').length > 0 && window.performance.getEntriesByType('navigation')[0].type === 'back_forward';
+  }
+
+  handleBackForwardVisit(page) {
+    this.loadComponent(null, window.location.pathname, page.component, page.data);
+  }
+  /**
+   * Get page data without reredndering Page component 
+   * @param {string} location - request url
+   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document
+   * @param {object} data - request body (object)
+   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
+   * @param {boolean} pushState - if true, push history state
+   */
+
+
+  getData(location, navigateLoading = true, pushState = false, data = {}, type = 'get') {
+    return new Promise((resolve, reject) => {
+      if (navigateLoading) {
+        fireNavigate(location);
+      }
+
+      axios$1({
+        method: type,
+        data: data,
+        url: location,
+        headers: {
+          "X-TernoboWire": true,
+          Accept: 'text/html, application/xhtml+xml',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      }).then(response => {
+        resolve(response.data.data);
+
+        if (response.headers['x-ternobowire']) {
+          if (pushState) {
+            this.pushState(location, response.data);
+          }
+
+          if (navigateLoading) {
+            firePageLoad(location);
+          }
+        }
+      }).catch(err => {
+        if (!TernoboWire.production) {
+          console.log(err);
+        }
+
+        reject(err);
+      }).then(() => {
+        if (navigateLoading) {
+          fireNavigationFinish(location);
+        }
+
+        resolve();
+      });
+    });
+  }
+  /**
+   * Reload current page
+   * @param {object} options - reload options (Documented on TernoboWire-Laravel)
+   */
+
+
+  reload(options = {}) {
+    let location = window.location.href;
+    fireNavigate(location);
+    axios$1({
+      method: "GET",
+      data: {
+        options: options
+      },
+      url: location,
+      headers: {
+        "X-ReloadData": true,
+        "X-TernoboWire": true
+      }
+    }).then(response => {
+      if (response.headers['x-ternobowire']) {
+        this.app.$store.commit("updateShared", response.data.shared);
+        this.loadComponent(window.location.pathname, window.location.pathname, response.data.component, response.data.data);
+        firePageLoad(location);
+      } else {
+        window.location.reload();
+      }
+    }).catch(err => {
+      if (!TernoboWire.production) {
+        console.log(err);
+      }
+    }).then(() => {
+      fireNavigationFinish(location);
+    });
+  }
+  /**
+   * Visit URL 
+   * @param {string} location - request url
+   * @param {boolean} navigateLoading - if true, dispatch navigation event to window.document
+   * @param {object} data - request body (object)
+   * @param {string} type - request method (POST,GET,PUT,DELETE,PATCH)
+   * @param {boolean} pushState - if true, push history state
+   */
+
+
+  visit(location, data = {}, type = 'get', pushState = true) {
+    this.app.emitBeforeRouteLeave(window.location.pathname, location, () => {
+      if (!testSameOrigin(location)) {
+        window.open(location);
+      }
+
+      fireNavigate(location);
+      axios$1({
+        method: type,
+        data: data,
+        url: location,
+        headers: {
+          "X-TernoboWire": true,
+          Accept: 'text/html, application/xhtml+xml',
+          'X-Requested-With': 'XMLHttpRequest',
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
+        }
+      }).then(response => {
+        if (response.headers['x-ternobowire']) {
+          this.app.$store.commit("updateShared", response.data.shared);
+          this.loadComponent(window.location.pathname, location, response.data.component, response.data.data);
+
+          if (pushState) {
+            this.pushState(location, response.data);
+          }
+
+          firePageLoad(location);
+        } else {
+          window.location = location;
+        }
+      }).catch(err => {
+        if (!TernoboWire.production) {
+          console.log(err);
+        }
+      }).then(() => {
+        fireNavigationFinish(location);
+      });
+    });
+  }
+
+  pushState(url, data) {
+    window.scrollTo(0, 0);
+    this.page = data;
+    window.history.pushState(this.createVisitId(data), "", url);
+  }
+
+  replaceState(url, data) {
+    this.page = data;
+    window.history.replaceState(data, "", url);
+  }
+
+  loadComponent(from, to, component, data) {
+    this.app.component = component;
+    this.app.data = data;
+    return this.app.emitbeforeRouteEnter(to, from);
+  }
+
+  createVisitId(data) {
+    this.visitId = {
+      data: data,
+      visitId: "wire"
+    };
+    return this.visitId;
+  }
+
+}
+
+export default __vue_component__;
 export { TernoboWire, plugin, store };

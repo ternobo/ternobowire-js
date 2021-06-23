@@ -31,6 +31,7 @@ const baseConfig = {
       }),
     ],
     replace: {
+      'preventAssignment': true,
       'process.env.NODE_ENV': JSON.stringify('production'),
       'process.env.ES_BUILD': JSON.stringify('false'),
     },
@@ -70,7 +71,7 @@ if (!argv.format || argv.format === 'es') {
     ...baseConfig,
     external,
     output: {
-      file: 'dist/wire-js.esm.js',
+      file: 'dist/ternobowire-js.esm.js',
       format: 'esm',
       exports: 'named',
     },
@@ -104,9 +105,9 @@ if (!argv.format || argv.format === 'cjs') {
     external,
     output: {
       compact: true,
-      file: 'dist/wire-js.ssr.js',
+      file: 'dist/ternobowire-js.ssr.js',
       format: 'cjs',
-      name: 'WireJs',
+      name: 'TernobowireJs',
       exports: 'named',
       globals,
     },
@@ -133,9 +134,9 @@ if (!argv.format || argv.format === 'iife') {
     external,
     output: {
       compact: true,
-      file: 'dist/wire-js.min.js',
+      file: 'dist/ternobowire-js.min.js',
       format: 'iife',
-      name: 'WireJs',
+      name: 'TernobowireJs',
       exports: 'named',
       globals,
     },
