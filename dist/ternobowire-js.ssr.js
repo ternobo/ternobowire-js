@@ -411,6 +411,10 @@ var WireLink = {
       type: String,
       required: true
     },
+    linkDisabled: {
+      type: Boolean,
+      default: false
+    },
     method: {
       type: String,
       default: 'get'
@@ -436,7 +440,10 @@ var WireLink = {
 
     var visit = function visit(event) {
       event.preventDefault();
-      node.parent.$store.state.ternoboWireApp.visit(props.href, requestData, props.method);
+
+      if (!node.props.linkDisabled) {
+        node.parent.$store.state.ternoboWireApp.visit(props.href, requestData, props.method);
+      }
     };
 
     return h(props.as, _objectSpread2(_objectSpread2({}, data), {}, {

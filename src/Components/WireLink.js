@@ -9,6 +9,10 @@ export default {
             type: String,
             required: true,
         },
+        linkDisabled: {
+            type: Boolean,
+            default: false
+        },
         method: {
             type: String,
             default: 'get',
@@ -31,7 +35,9 @@ export default {
         let requestData = props.data ? props.data : {};
         const visit = event => {
             event.preventDefault()
-            node.parent.$store.state.ternoboWireApp.visit(props.href, requestData, props.method);
+            if (!node.props.linkDisabled) {
+                node.parent.$store.state.ternoboWireApp.visit(props.href, requestData, props.method);
+            }
         }
 
         return h(props.as, {
